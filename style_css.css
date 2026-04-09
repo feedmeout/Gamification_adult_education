@@ -1,0 +1,848 @@
+/* Enhanced Responsive CSS for Gamification in Education Presentation */
+
+:root {
+    --primary-color: #FF6B35; /* Main orange color */
+    --secondary-color: #F7C59F; /* Lighter orange/peach */
+    --accent-color: #EFEFD0; /* Light cream */
+    --dark-accent: #004E89; /* Dark blue */
+    --light-accent: #1A659E; /* Medium blue */
+    --text-primary: #333333; /* Dark text */
+    --text-light: #FFFFFF; /* Light text */
+    --background-light: #F9F9F9; /* Light background */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: 16px; /* Base font size */
+    width: 100%;
+    height: 100%;
+}
+
+/* Accessible focus styles */
+:focus {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Use relative units for better scaling */
+.container {
+    max-width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Headings with responsive font sizes using clamp */
+h1 {
+    color: var(--primary-color);
+    font-size: clamp(2rem, 5vw, 4rem); /* Responsive font size */
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+h2 {
+    color: var(--primary-color);
+    font-size: clamp(1.5rem, 3vw, 2.5rem); /* Responsive font size */
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    text-align: center;
+}
+
+h3 {
+    color: var(--primary-color);
+    font-size: clamp(1.2rem, 2.5vw, 2rem);
+    margin: 0.6rem 0;
+}
+
+/* Paragraphs with responsive font size */
+p {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    line-height: 1.4;
+    margin-bottom: 0.8rem;
+}
+
+/* Card Layouts */
+.card {
+    background-color: var(--background-light);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border: 2px solid #e0e0e0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid Layouts - Responsive with auto-fit */
+.grid {
+    display: grid;
+    gap: 1rem;
+    width: 100%;
+}
+
+.grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Icon Containers */
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+}
+
+/* Feature Lists */
+.feature-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.feature-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.8rem;
+    flex-shrink: 0;
+}
+
+.feature-text {
+    flex: 1;
+    line-height: 1.3;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+}
+
+/* Animation Effects */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Animation classes */
+.fadeIn {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+.slideInUp {
+    animation: slideInUp 0.8s ease forwards;
+}
+
+.slideInLeft {
+    animation: slideInLeft 0.8s ease forwards;
+}
+
+.slideInRight {
+    animation: slideInRight 0.8s ease forwards;
+}
+
+/* Progressive Reveal */
+.reveal-element {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease, visibility 0.6s;
+    pointer-events: none;
+}
+
+.reveal-element.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Highlight element */
+.highlight {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Badge Style */
+.badge {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-radius: 20px;
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+/* Divider */
+.divider {
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 1rem auto;
+    width: 80px;
+    opacity: 0.7;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite ease-in-out;
+}
+
+/* Progress Indicator */
+.progress-indicator {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.progress-dot {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background-color: #DDD;
+    margin: 0 0.3rem;
+    transition: background-color 0.3s ease;
+}
+
+.progress-dot.active {
+    background-color: var(--primary-color);
+}
+
+/* Responsive slide container */
+.slide {
+    height: 100%;
+    width: 100%;
+    display: none;
+    overflow: hidden;
+}
+
+.slide.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Slide content area with improved scrolling */
+.slide-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Implementation container for roadmap slides - responsive flex */
+.implementation-container {
+    display: flex;
+    gap: 1rem;
+    flex: 1;
+    overflow: hidden;
+    max-height: calc(100% - 8rem);
+}
+
+/* Column layouts with responsive behavior */
+.phases-column, .roadmap-column, .tips-column {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Phase cards */
+.phase-card {
+    background-color: #f9f9f9;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    border-left: 5px solid var(--primary-color);
+}
+
+/* Roadmap styling */
+.roadmap {
+    position: relative;
+    background-color: #f9f9f9;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    height: calc(100% - 2rem);
+}
+
+.roadmap-title {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.roadmap-line {
+    position: absolute;
+    left: 1.5rem;
+    top: 5rem;
+    bottom: 5rem;
+    width: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+/* Milestone styling */
+.milestone {
+    position: relative;
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+}
+
+.milestone::before {
+    content: '';
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    background-color: white;
+    border: 4px solid var(--primary-color);
+    border-radius: 50%;
+    left: -1.5rem;
+    top: 0.3rem;
+}
+
+.milestone-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.milestone-title {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-weight: bold;
+    color: #333;
+}
+
+.milestone-content {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.milestone-content p {
+    margin: 0 0 0.5rem 0;
+    font-size: clamp(0.9rem, 1.6vw, 1rem);
+    line-height: 1.3;
+}
+
+/* Tips section */
+.tips-section {
+    background-color: rgba(255, 107, 53, 0.05);
+    border: 1px dashed var(--primary-color);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tips-title {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.tip-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.tip-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.tip-title {
+    font-size: clamp(1rem, 1.7vw, 1.2rem);
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.tip-content {
+    font-size: clamp(0.9rem, 1.5vw, 1rem);
+    line-height: 1.3;
+    color: #555;
+    flex: 1;
+}
+
+/* Scrollable areas with improved touch behavior */
+.scrollable-content {
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Scroll indicators */
+.scroll-indicator {
+    text-align: center;
+    padding: 0.5rem;
+    color: var(--primary-color);
+    font-size: clamp(0.8rem, 1.4vw, 1rem);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Navigation controls */
+.slide-navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem 1rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-top: 1px solid #eee;
+}
+
+.nav-button {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+    transition: background-color 0.3s;
+}
+
+.nav-button:hover {
+    background-color: var(--light-accent);
+}
+
+.nav-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+    display: flex;
+    border-bottom: 2px solid var(--primary-color);
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    padding: 0.6rem 1.2rem;
+    background-color: transparent;
+    color: var(--text-primary);
+    border: none;
+    cursor: pointer;
+    font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+    transition: background-color 0.3s;
+    position: relative;
+    border-radius: 4px 4px 0 0;
+}
+
+.tab-button::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: transparent;
+    transition: background-color 0.3s;
+}
+
+.tab-button.active {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.tab-button.active::after {
+    background-color: var(--primary-color);
+}
+
+.tab-content {
+    display: none;
+    padding: 1rem;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* SPECIFIC STYLES FOR HISTORY SLIDE (TAXIDI STO XRONO) */
+
+/* Make the visualization responsive */
+.visualization {
+    width: 100%;
+    background-color: #F9F9F9;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+    height: min(520px, 70vh);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+    border: 2px solid #F7C59F;
+}
+
+/* Adjust the time passport to be responsive */
+.time-passport {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: #EFEFD0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23EFEFD0"/><path d="M0,0L100,100M0,100L100,0" stroke="%23F7C59F" stroke-width="0.5" stroke-opacity="0.2"/></svg>');
+    overflow: hidden;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fix the era sections to be responsive */
+.eras-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.era-section {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: min(280px, 90%);
+    min-height: 250px;
+    overflow: hidden;
+}
+
+/* Ensure era title fits */
+.era-title {
+    color: #004E89;
+    font-weight: bold;
+    font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+/* Enhanced responsive collection grid */
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+    padding: 0 1rem;
+}
+
+.collection-item {
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+
+.collection-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #F7C59F;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    margin-bottom: 8px;
+}
+
+.collection-name {
+    font-size: clamp(0.8rem, 1.4vw, 0.9rem);
+    color: #333;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.collection-era {
+    font-size: clamp(0.7rem, 1.2vw, 0.8rem);
+    color: #FF6B35;
+}
+
+/* Tab content */
+.tab-content {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Era revolution styling */
+.era-revolution {
+    background-color: #F2F2F2;
+    border: 2px dashed #ccc;
+    min-height: 250px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 1200px) {
+    .implementation-container {
+        gap: 0.8rem;
+    }
+    
+    .collection-grid {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        gap: 10px;
+    }
+}
+
+@media (max-width: 992px) {
+    .implementation-container {
+        flex-direction: column;
+    }
+    
+    .roadmap-column, .phases-column, .tips-column {
+        width: 100%;
+    }
+    
+    .visualization {
+        height: min(450px, 60vh);
+    }
+    
+    .era-section {
+        min-height: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .eras-container {
+        flex-direction: column;
+    }
+    
+    .visualization {
+        height: min(400px, 50vh);
+    }
+    
+    .collection-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+    
+    .nav-button {
+        padding: 0.8rem 1.2rem; /* Larger touch target */
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        padding: 0.8rem;
+    }
+    
+    .milestone::before {
+        left: -1.2rem;
+    }
+    
+    .milestone {
+        margin-left: 1.5rem;
+    }
+    
+    .roadmap-line {
+        left: 1rem;
+    }
+    
+    .visualization {
+        height: min(350px, 45vh);
+    }
+    
+    .collection-item {
+        padding: 8px;
+    }
+    
+    .collection-icon {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .nav-button {
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Optimize for portrait orientation */
+@media (orientation: portrait) {
+    .eras-container {
+        flex-direction: column;
+    }
+    
+    .implementation-container {
+        flex-direction: column;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    .card:hover {
+        transform: none;
+    }
+    
+    .nav-button {
+        padding: 0.8rem 1.5rem; /* Larger touch target */
+    }
+    
+    .scrollable-content {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Accessibility improvements */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-light: #2d2d2d;
+        --text-primary: #f0f0f0;
+    }
+    
+    .card, .milestone-content, .tip-card {
+        background-color: #3d3d3d;
+    }
+    
+    .era-section, .collection-item {
+        background-color: #3d3d3d;
+    }
+}

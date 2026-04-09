@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical Implementation Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 25px;
+            background-color: white;
+            color: #333;
+        }
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #FF6B35;
+            font-size: 38px;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        /* Decorative line */
+        .decorative-line {
+            height: 3px;
+            background: linear-gradient(90deg, rgba(255,107,53,0.1) 0%, rgba(255,107,53,1) 50%, rgba(255,107,53,0.1) 100%);
+            margin: 0 auto 40px auto;
+            width: 80%;
+            border-radius: 2px;
+        }
+        
+        /* Implementation Phases Section */
+        .phases-grid {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .phase-card {
+            flex: 1;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .phase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .phase-title {
+            font-weight: bold;
+            color: #FF6B35;
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .phase-number {
+            background-color: #FF6B35;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 24px;
+            box-shadow: 0 3px 8px rgba(255, 107, 53, 0.3);
+        }
+        
+        .phase-icon {
+            text-align: center;
+            margin-bottom: 25px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .phase-icon svg {
+            height: 80px;
+            width: auto;
+        }
+        
+        .key-points {
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .key-point {
+            background-color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .key-point:last-child {
+            margin-bottom: 0;
+        }
+        
+        .key-point-icon {
+            color: #FF6B35;
+            margin-right: 12px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .key-point-text {
+            flex: 1;
+        }
+        
+        .highlight {
+            font-weight: bold;
+            color: #FF6B35;
+        }
+        
+        /* Tips Grid Section from Slide 9 */
+        .tips-grid {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .tip-card {
+            flex: 1;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .tip-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(255, 107, 53, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 8px rgba(255, 107, 53, 0.1);
+        }
+        
+        .tip-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .tip-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #FF6B35;
+            margin-bottom: 15px;
+        }
+        
+        .tip-content {
+            font-size: 17px;
+            line-height: 1.5;
+            color: #444;
+        }
+        
+        @media (max-width: 1200px) {
+            .phases-grid, .tips-grid {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Practical Implementation Guide</h1>
+        <div class="decorative-line"></div>
+        
+        <!-- Implementation Phases from Slide 8 -->
+        <div class="phases-grid">
+            <div class="phase-card">
+                <div class="phase-title">
+                    <div class="phase-number">1</div>
+                    <div>Needs Analysis</div>
+                </div>
+                <div class="phase-icon">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M12 8v4l3 3"></path>
+                    </svg>
+                </div>
+                <div class="key-points">
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Define <span class="highlight">learning objectives</span></span>
+                    </div>
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Understand <span class="highlight">learner styles</span></span>
+                    </div>
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Identify <span class="highlight">tricky topics</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <div class="phase-title">
+                    <div class="phase-number">2</div>
+                    <div>Design</div>
+                </div>
+                <div class="phase-icon">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                </div>
+                <div class="key-points">
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Pick <span class="highlight">gamification elements</span></span>
+                    </div>
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Create <span class="highlight">a narrative frame</span></span>
+                    </div>
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Design <span class="highlight">tiered progression</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <div class="phase-title">
+                    <div class="phase-number">3</div>
+                    <div>Implementation</div>
+                </div>
+                <div class="phase-icon">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2">
+                        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12" y2="18"></line>
+                        <line x1="8" y1="6" x2="16" y2="6"></line>
+                        <line x1="8" y1="10" x2="16" y2="10"></line>
+                        <line x1="8" y1="14" x2="16" y2="14"></line>
+                    </svg>
+                </div>
+                <div class="key-points">
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Pick <span class="highlight">simple tools</span></span>
+                    </div>
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Create <span class="highlight">visual elements</span></span>
+                    </div>
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Prepare <span class="highlight">backup plans</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <div class="phase-title">
+                    <div class="phase-number">4</div>
+                    <div>Evaluation & Adaptation</div>
+                </div>
+                <div class="phase-icon">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                </div>
+                <div class="key-points">
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Pilot at <span class="highlight">small scale</span></span>
+                    </div>
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Collect <span class="highlight">feedback</span></span>
+                    </div>
+                    <div class="key-point">
+                        <span class="key-point-icon">•</span>
+                        <span class="key-point-text">Ongoing <span class="highlight">improvement</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tips from Slide 9 -->
+        <div class="tips-grid">
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </div>
+                <div class="tip-title">Intrinsic Motivation</div>
+                <div class="tip-content">
+                    Design activities that build on the natural curiosity and interests of your learners.
+                </div>
+            </div>
+            
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                </div>
+                <div class="tip-title">Flow Zone</div>
+                <div class="tip-content">
+                    Design challenges hard enough to keep interest, but not so hard they overwhelm.
+                </div>
+            </div>
+            
+            <div class="tip-card">
+                <div class="tip-icon">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2">
+                        <path d="M22 11.08V12a10 10.0 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <div class="tip-title">Immediate Feedback</div>
+                <div class="tip-content">
+                    Give quick, clear feedback that guides learners and recognises their progress.
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

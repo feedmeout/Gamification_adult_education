@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study: Languages</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 32px 56px 28px 56px;
+            background-color: white;
+            color: #333;
+        }
+        .container {
+            max-width: 1700px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #FF6B35;
+            font-size: 38px;
+            margin: 0 0 6px 0;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+        .case-tag {
+            text-align: center;
+            color: #004E89;
+            font-size: 18px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        .case-tag .badge {
+            background-color: #1A659E;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            margin-right: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            vertical-align: middle;
+        }
+
+        .scenario-strip {
+            background: linear-gradient(135deg, #1A659E 0%, #004E89 100%);
+            color: white;
+            padding: 20px 32px;
+            border-radius: 11px;
+            margin-bottom: 26px;
+            box-shadow: 0 4px 14px rgba(0, 78, 137, 0.18);
+            font-size: 19px;
+            line-height: 1.55;
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .scenario-strip.visible { opacity: 1; transform: translateY(0); }
+        .scenario-strip strong {
+            color: #F7C59F;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .scenario-strip span { flex: 1; text-align: justify; }
+
+        /* Cards hug content - no row stretching */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 22px;
+        }
+        .card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 24px 28px 22px 28px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            border: 1px solid #e0e0e0;
+            border-top: 4px solid #FF6B35;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .card.visible { opacity: 1; transform: translateY(0); }
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 9px;
+        }
+        .card-icon {
+            font-size: 36px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FF6B35;
+            line-height: 1.18;
+        }
+        .card-text {
+            font-size: 18px;
+            line-height: 1.55;
+            color: #444;
+            text-align: justify;
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+        .card-tool {
+            font-size: 14px;
+            color: #FF6B35;
+            font-weight: 600;
+            background-color: rgba(255, 107, 53, 0.1);
+            padding: 4px 11px;
+            border-radius: 4px;
+            align-self: flex-start;
+        }
+
+        /* What changed for the learners — horizontal strip */
+        .outcomes-strip {
+            margin-top: 22px;
+            background-color: #EFEFD0;
+            border-radius: 11px;
+            padding: 18px 24px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .outcomes-strip.visible { opacity: 1; transform: translateY(0); }
+        .takeaway {
+            margin-top: 16px;
+            background-color: white;
+            border-radius: 7px;
+            padding: 14px 18px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            border-left: 4px solid #FF6B35;
+            text-align: justify;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .takeaway.visible { opacity: 1; transform: translateY(0); }
+        .takeaway strong { color: #FF6B35; }
+        .outcomes-title {
+            color: #FF6B35;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+        .outcomes-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+        .outcome-chip {
+            background-color: white;
+            border-radius: 8px;
+            padding: 12px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .outcome-icon {
+            font-size: 26px;
+            line-height: 1;
+        }
+        .outcome-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #004E89;
+            line-height: 1.25;
+        }
+
+        /* Decorative strip kept for compatibility but hidden */
+        .decorative-section { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Case Study: Languages</h1>
+        <div class="case-tag"><span class="badge">SECONDARY EXAMPLE</span>Finnish as a Second Language · Immigrants</div>
+
+        <div class="scenario-strip" id="scen">
+            <strong>Situation</strong>
+            <span>Mixed group: different first languages, ages, prior education. The bottleneck is between-session practice — learners want to do more, but solo study at home rarely sticks.</span>
+        </div>
+
+        <div class="grid">
+            <div class="card" id="c1">
+                <div class="card-head">
+                    <span class="card-icon">🃏</span>
+                    <span class="card-title">Vocabulary collection deck</span>
+                </div>
+                <div class="card-text">Each new word → a card in a personal Quizlet deck.<br>Streak + growing collection do the work.</div>
+                <span class="card-tool">Quizlet · phone · freemium</span>
+            </div>
+
+            <div class="card" id="c2">
+                <div class="card-head">
+                    <span class="card-icon">🎲</span>
+                    <span class="card-title">Random speaking quests</span>
+                </div>
+                <div class="card-text">Wheel-of-names picks speaker and topic.<br>Five minutes.<br>No more "being called on".</div>
+                <span class="card-tool">wheelofnames.com · free</span>
+            </div>
+
+            <div class="card" id="c3">
+                <div class="card-head">
+                    <span class="card-icon">🏆</span>
+                    <span class="card-title">"Real Finland" missions</span>
+                </div>
+                <div class="card-text">Weekly side-quest: use one Finnish phrase at the shop, library or bus stop.<br>Voice note and photo sent to the group chat as proof.</div>
+                <span class="card-tool">WhatsApp · phone camera · free</span>
+            </div>
+
+            <div class="card" id="c4">
+                <div class="card-head">
+                    <span class="card-icon">📱</span>
+                    <span class="card-title">Quizizz / Kahoot warm-ups</span>
+                </div>
+                <div class="card-text">Five-minute phone quiz to open each session.<br>Anonymous — levels the field for shy learners.</div>
+                <span class="card-tool">Quizizz · Kahoot · freemium</span>
+            </div>
+
+            <div class="card" id="c5">
+                <div class="card-head">
+                    <span class="card-icon">🎯</span>
+                    <span class="card-title">Streak-based vocabulary</span>
+                </div>
+                <div class="card-text">Duolingo-style streaks in Quizlet or Memrise.<br>Five minutes a day.<br>The streak becomes its own reward.</div>
+                <span class="card-tool">Quizlet · Memrise · Duolingo · freemium</span>
+            </div>
+
+            <div class="card" id="c6">
+                <div class="card-head">
+                    <span class="card-icon">🎓</span>
+                    <span class="card-title">Tiered "Finnish in the wild"</span>
+                </div>
+                <div class="card-text">Bronze / silver / gold milestones for real-world missions.<br>Certificates learners actually keep.</div>
+                <span class="card-tool">Canva · Google Slides · freemium</span>
+            </div>
+        </div>
+
+        <div class="outcomes-strip" id="outcomes">
+            <div class="outcomes-title">What changed for the learners</div>
+            <div class="outcomes-row">
+                <div class="outcome-chip"><div class="outcome-icon">📈</div><div class="outcome-name">More practice between sessions</div></div>
+                <div class="outcome-chip"><div class="outcome-icon">🗣️</div><div class="outcome-name">Lower fear of speaking</div></div>
+                <div class="outcome-chip"><div class="outcome-icon">🏙️</div><div class="outcome-name">Real-world Finnish use</div></div>
+                <div class="outcome-chip"><div class="outcome-icon">🤝</div><div class="outcome-name">Stronger group bond</div></div>
+                <div class="outcome-chip"><div class="outcome-icon">📊</div><div class="outcome-name">Visible personal progress</div></div>
+                <div class="outcome-chip"><div class="outcome-icon">🎓</div><div class="outcome-name">Tangible certificates</div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ids = ['scen', 'c1', 'c2', 'c3', 'c4', 'c5', 'c6', 'outcomes'];
+        function reveal() {
+            ids.forEach((id, i) => {
+                setTimeout(() => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('visible');
+                }, i * 150);
+            });
+        }
+        function reset() {
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('visible');
+            });
+        }
+        window.addEventListener('message', function(event) {
+            if (event.data === 'slideActive') { reset(); setTimeout(reveal, 100); }
+            if (event.data === 'showAll') {
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('visible');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -3,430 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gamification in Adult Education</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reset.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css">
-    <link rel="stylesheet" href="css/custom.css">
+    <title>Gamification in Adult Education — A. Christopoulos, UTU</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: Arial, sans-serif;
+        }
+        
+        #presentation-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+        }
+        
+        .slide-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            overflow: hidden;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .slide-frame::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .slide-frame.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background-color: #ff0000;
+            z-index: 9999;
+            opacity: 0.3;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: transparent;
+            color: rgba(0, 0, 0, 0.7);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 9999;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            text-shadow: 0 0 1px white, 0 0 2px white, 0 0 3px white;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+        }
+        
+        .slide-counter:hover {
+            opacity: 1;
+        }
+        
+        .timer {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 9999;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+            display: none;
+        }
+        
+        .timer:hover {
+            opacity: 1;
+        }
+        
+        #nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        #message-overlay {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 10001;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        #nav-buttons {
+            display: none;
+        }
+        
+        .nav-button {
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+            font-size: 16px;
+        }
+        
+        .nav-button:hover {
+            opacity: 1;
+        }
+        
+        #key-trap {
+            position: fixed;
+            top: -1000px;
+            left: -1000px;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
-    <a href="handout.html" class="handout-link" title="View &amp; Download Handout">&#128196; Handout</a>
-
-    <div class="reveal">
-        <div class="slides">
-
-            <!-- TITLE SLIDE -->
-            <section data-background-color="#1a1a2e">
-                <h1 class="title-main">Gamification in Adult Education</h1>
-                <p class="subtitle">Engaging Learners Through Game-Based Strategies</p>
-                <hr class="title-hr">
-                <p class="title-meta">A Presentation on Motivation, Engagement &amp; Learning Outcomes</p>
-            </section>
-
-            <!-- AGENDA -->
-            <section>
-                <h2>Agenda</h2>
-                <ol>
-                    <li>What Is Gamification?</li>
-                    <li>Why It Matters for Adults</li>
-                    <li>Theoretical Foundations</li>
-                    <li>Core Game Elements</li>
-                    <li>Benefits &amp; Evidence</li>
-                    <li>Design Principles</li>
-                    <li>Practical Examples</li>
-                    <li>Challenges &amp; Pitfalls</li>
-                    <li>Tools &amp; Technologies</li>
-                    <li>Key Takeaways</li>
-                </ol>
-            </section>
-
-            <!-- WHAT IS GAMIFICATION -->
-            <section>
-                <section>
-                    <h2>What Is Gamification?</h2>
-                    <blockquote>
-                        &ldquo;The use of game design elements in non-game contexts to enhance user engagement, motivation, and learning.&rdquo;
-                    </blockquote>
-                    <p class="attribution">&mdash; Deterding, Dixon, Khaled &amp; Nacke (2011)</p>
-                </section>
-                <section>
-                    <h2>Gamification Is NOT&hellip;</h2>
-                    <div class="comparison-grid">
-                        <div class="comparison-item wrong">
-                            <h3>&#10060; Turning everything into a game</h3>
-                        </div>
-                        <div class="comparison-item wrong">
-                            <h3>&#10060; Just adding points and badges</h3>
-                        </div>
-                        <div class="comparison-item right">
-                            <h3>&#9989; Applying motivational mechanics</h3>
-                        </div>
-                        <div class="comparison-item right">
-                            <h3>&#9989; Designing meaningful experiences</h3>
-                        </div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- WHY IT MATTERS FOR ADULTS -->
-            <section>
-                <section>
-                    <h2>Why Gamification for Adults?</h2>
-                    <div class="stat-grid">
-                        <div class="stat-card">
-                            <span class="stat-number">70%</span>
-                            <span class="stat-label">of adults report low engagement in traditional training</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-number">83%</span>
-                            <span class="stat-label">of learners feel more motivated with gamified content</span>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-number">61%</span>
-                            <span class="stat-label">higher retention in gamified vs. traditional approaches</span>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Adult Learners Are Unique</h2>
-                    <ul>
-                        <li><strong>Self-directed</strong> &mdash; they want autonomy over their learning</li>
-                        <li><strong>Experience-rich</strong> &mdash; they bring prior knowledge to the table</li>
-                        <li><strong>Goal-oriented</strong> &mdash; they need relevance and applicability</li>
-                        <li><strong>Time-constrained</strong> &mdash; they juggle work, family, and study</li>
-                        <li><strong>Intrinsically motivated</strong> &mdash; when the content resonates</li>
-                    </ul>
-                    <p class="fragment"><em>Gamification can address all of these needs.</em></p>
-                </section>
-            </section>
-
-            <!-- THEORETICAL FOUNDATIONS -->
-            <section>
-                <section>
-                    <h2>Theoretical Foundations</h2>
-                    <p>Gamification in education rests on well-established theories:</p>
-                </section>
-                <section>
-                    <h2>Self-Determination Theory</h2>
-                    <p class="theory-author">Deci &amp; Ryan (1985)</p>
-                    <div class="three-col">
-                        <div class="col-card">
-                            <h3>Autonomy</h3>
-                            <p>Choice and control over learning paths</p>
-                        </div>
-                        <div class="col-card">
-                            <h3>Competence</h3>
-                            <p>Mastery through progressive challenges</p>
-                        </div>
-                        <div class="col-card">
-                            <h3>Relatedness</h3>
-                            <p>Social connection and collaboration</p>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Flow Theory</h2>
-                    <p class="theory-author">Csikszentmihalyi (1990)</p>
-                    <div class="flow-diagram">
-                        <div class="flow-zone anxiety">Anxiety<br><small>Challenge &gt; Skill</small></div>
-                        <div class="flow-zone flow">FLOW<br><small>Challenge = Skill</small></div>
-                        <div class="flow-zone boredom">Boredom<br><small>Skill &gt; Challenge</small></div>
-                    </div>
-                    <p>Gamification helps keep learners in the <strong>flow zone</strong> through adaptive difficulty.</p>
-                </section>
-                <section>
-                    <h2>Andragogy</h2>
-                    <p class="theory-author">Knowles (1980)</p>
-                    <ul>
-                        <li>Adults need to know <strong>why</strong> they are learning</li>
-                        <li>Learning should be <strong>problem-centered</strong>, not content-centered</li>
-                        <li>Experience is the richest <strong>resource</strong> for learning</li>
-                        <li>Adults are most interested in <strong>immediately applicable</strong> knowledge</li>
-                    </ul>
-                </section>
-            </section>
-
-            <!-- CORE GAME ELEMENTS -->
-            <section>
-                <section>
-                    <h2>Core Game Elements</h2>
-                    <p>The building blocks of gamified learning experiences</p>
-                </section>
-                <section>
-                    <h2>Points, Badges &amp; Leaderboards</h2>
-                    <div class="three-col">
-                        <div class="col-card">
-                            <h3>&#127942; Points</h3>
-                            <p>Quantify progress and effort. Provide immediate feedback.</p>
-                        </div>
-                        <div class="col-card">
-                            <h3>&#127941; Badges</h3>
-                            <p>Recognize achievements and milestones. Build identity.</p>
-                        </div>
-                        <div class="col-card">
-                            <h3>&#127944; Leaderboards</h3>
-                            <p>Foster healthy competition. Can be individual or team-based.</p>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h2>Beyond PBL</h2>
-                    <ul>
-                        <li><strong>Narratives &amp; Storytelling</strong> &mdash; contextualize learning in a meaningful story</li>
-                        <li><strong>Quests &amp; Missions</strong> &mdash; structure tasks as goal-oriented challenges</li>
-                        <li><strong>Progress Bars</strong> &mdash; visualize advancement toward completion</li>
-                        <li><strong>Levels &amp; Unlockables</strong> &mdash; scaffold difficulty and reward persistence</li>
-                        <li><strong>Social Collaboration</strong> &mdash; team challenges, peer feedback, guilds</li>
-                        <li><strong>Immediate Feedback</strong> &mdash; real-time responses to learner actions</li>
-                    </ul>
-                </section>
-            </section>
-
-            <!-- BENEFITS & EVIDENCE -->
-            <section>
-                <section>
-                    <h2>Benefits &amp; Evidence</h2>
-                </section>
-                <section>
-                    <h2>Motivation &amp; Engagement</h2>
-                    <ul>
-                        <li>Gamification increases <strong>intrinsic motivation</strong> when designed well</li>
-                        <li>Adult learners report higher <strong>satisfaction</strong> and <strong>enjoyment</strong></li>
-                        <li>Completion rates in gamified courses can rise by <strong>30&ndash;50%</strong></li>
-                    </ul>
-                </section>
-                <section>
-                    <h2>Learning Outcomes</h2>
-                    <ul>
-                        <li>Improved <strong>knowledge retention</strong> through active recall and spaced repetition</li>
-                        <li>Better <strong>problem-solving skills</strong> via scenario-based challenges</li>
-                        <li>Enhanced <strong>critical thinking</strong> through decision-making mechanics</li>
-                        <li>Stronger <strong>collaboration skills</strong> from team-based activities</li>
-                    </ul>
-                </section>
-                <section>
-                    <h2>Research Highlights</h2>
-                    <table>
-                        <thead>
-                            <tr><th>Study</th><th>Finding</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Hamari et al. (2014)</td><td>Positive effects on engagement in majority of studies reviewed</td></tr>
-                            <tr><td>Subhash &amp; Cudney (2018)</td><td>Gamification improves learning outcomes in higher education</td></tr>
-                            <tr><td>Sailer &amp; Homner (2020)</td><td>Game elements positively affect cognitive and behavioral outcomes</td></tr>
-                            <tr><td>Landers (2014)</td><td>Game elements moderate relationship between instruction and outcomes</td></tr>
-                        </tbody>
-                    </table>
-                </section>
-            </section>
-
-            <!-- DESIGN PRINCIPLES -->
-            <section>
-                <section>
-                    <h2>Design Principles</h2>
-                    <p>How to gamify effectively for adult learners</p>
-                </section>
-                <section>
-                    <h2>Start With Learning Objectives</h2>
-                    <div class="principle-box">
-                        <p><strong>Rule #1:</strong> Game elements should serve the learning goals &mdash; not the other way around.</p>
-                    </div>
-                    <ol>
-                        <li>Define clear, measurable learning outcomes</li>
-                        <li>Map game mechanics to those outcomes</li>
-                        <li>Align rewards with meaningful achievement</li>
-                    </ol>
-                </section>
-                <section>
-                    <h2>Know Your Audience</h2>
-                    <div class="player-types">
-                        <div class="player-type">
-                            <h3>Achievers</h3>
-                            <p>Want mastery and completion</p>
-                        </div>
-                        <div class="player-type">
-                            <h3>Explorers</h3>
-                            <p>Want discovery and freedom</p>
-                        </div>
-                        <div class="player-type">
-                            <h3>Socializers</h3>
-                            <p>Want interaction and teamwork</p>
-                        </div>
-                        <div class="player-type">
-                            <h3>Competitors</h3>
-                            <p>Want rankings and challenges</p>
-                        </div>
-                    </div>
-                    <p class="fragment"><em>Based on Bartle&rsquo;s Player Types (1996)</em></p>
-                </section>
-                <section>
-                    <h2>Design Guidelines</h2>
-                    <ul>
-                        <li><strong>Make it voluntary</strong> &mdash; forced gamification backfires</li>
-                        <li><strong>Balance challenge &amp; skill</strong> &mdash; too easy = boring, too hard = frustrating</li>
-                        <li><strong>Offer meaningful choices</strong> &mdash; autonomy drives engagement</li>
-                        <li><strong>Provide clear feedback</strong> &mdash; learners need to know where they stand</li>
-                        <li><strong>Allow failure safely</strong> &mdash; mistakes should be learning opportunities</li>
-                        <li><strong>Iterate and improve</strong> &mdash; test, gather data, refine</li>
-                    </ul>
-                </section>
-            </section>
-
-            <!-- PRACTICAL EXAMPLES -->
-            <section>
-                <section>
-                    <h2>Practical Examples</h2>
-                    <p>Gamification in action</p>
-                </section>
-                <section>
-                    <h2>Example 1: Corporate Training</h2>
-                    <div class="example-box">
-                        <h3>Onboarding Quest</h3>
-                        <ul>
-                            <li>New employees complete a &ldquo;quest&rdquo; to learn company systems</li>
-                            <li>Each module unlocks a badge and the next level</li>
-                            <li>Team leaderboard encourages cohort engagement</li>
-                            <li>Final &ldquo;boss challenge&rdquo;: a scenario-based assessment</li>
-                        </ul>
-                        <p><strong>Result:</strong> 40% faster onboarding, 25% higher knowledge retention</p>
-                    </div>
-                </section>
-                <section>
-                    <h2>Example 2: Language Learning</h2>
-                    <div class="example-box">
-                        <h3>Duolingo-Style Approach</h3>
-                        <ul>
-                            <li>Daily streaks to build habits</li>
-                            <li>XP points for completed lessons</li>
-                            <li>Skill trees that visualize progress</li>
-                            <li>Hearts/lives system to encourage accuracy</li>
-                        </ul>
-                        <p><strong>Result:</strong> Consistent daily practice increases fluency outcomes</p>
-                    </div>
-                </section>
-                <section>
-                    <h2>Example 3: Professional Development</h2>
-                    <div class="example-box">
-                        <h3>Certification Pathway</h3>
-                        <ul>
-                            <li>Micro-credentials for individual skills</li>
-                            <li>Portfolio-based evidence collection</li>
-                            <li>Peer review challenges earn collaboration badges</li>
-                            <li>Progress dashboard with competency mapping</li>
-                        </ul>
-                        <p><strong>Result:</strong> Higher course completion and learner satisfaction</p>
-                    </div>
-                </section>
-            </section>
-
-            <!-- CHALLENGES & PITFALLS -->
-            <section>
-                <section>
-                    <h2>Challenges &amp; Pitfalls</h2>
-                </section>
-                <section>
-                    <h2>Common Pitfalls</h2>
-                    <ul>
-                        <li><strong>Overjustification Effect</strong> &mdash; external rewards can undermine intrinsic motivation</li>
-                        <li><strong>One-Size-Fits-All</strong> &mdash; not all learners respond to the same mechanics</li>
-                        <li><strong>Shallow Gamification</strong> &mdash; slapping badges on boring content doesn&rsquo;t work</li>
-                        <li><strong>Competition Anxiety</strong> &mdash; leaderboards can demotivate struggling learners</li>
-                        <li><strong>Novelty Wear-Off</strong> &mdash; engagement may decline over time without refreshing</li>
-                    </ul>
-                </section>
-                <section>
-                    <h2>Ethical Considerations</h2>
-                    <ul>
-                        <li><strong>Manipulation vs. Motivation</strong> &mdash; are we empowering or exploiting?</li>
-                        <li><strong>Data Privacy</strong> &mdash; tracking progress means handling personal data</li>
-                        <li><strong>Inclusivity</strong> &mdash; game elements must be accessible to all learners</li>
-                        <li><strong>Cultural Sensitivity</strong> &mdash; competition and achievement vary across cultures</li>
-                    </ul>
-                </section>
-            </section>
-
-            <!-- TOOLS & TECHNOLOGIES -->
-            <section>
-                <section>
-                    <h2>Tools &amp; Technologies</h2>
-                </section>
-                <section>
-                    <h2>Platforms &amp; Software</h2>
-                    <table>
-                        <thead>
-                            <tr><th>Tool</th><th>Best For</th><th>Key Feature</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Kahoot!</td><td>Live quizzes</td><td>Real-time engagement</td></tr>
-                            <tr><td>Classcraft</td><td>Classroom RPG</td><td>Behavior &amp; collaboration</td></tr>
-                            <tr><td>Badgr / Open Badges</td><td>Credentialing</td><td>Portable digital badges</td></tr>
-                            <tr><td>Moodle (with plugins)</td><td>LMS gamification</td><td>Points, levels, leaderboards</td></tr>
-                            <tr><td>Genially</td><td>Interactive content</td><td>Gamified presentations</td></tr>
-                            <tr><td>Quizizz</td><td>Self-paced quizzes</td><td>Memes &amp; fun feedback</td></tr>
-                        </tbody>
-                    </table>
-                </section>
-            </section>
-
-            <!-- KEY TAKEAWAYS -->
-            <section>
-                <section data-background-color="#16213e">
-                    <h2 style="color: #e94560;">Key Takeaways</h2>
-                    <ol style="color: #eee;">
-                        <li>Gamification is about <strong>motivation design</strong>, not just games</li>
-                        <li>It works best when grounded in <strong>learning theory</strong></li>
-                        <li>Adult learners need <strong>autonomy, relevance, and respect</strong></li>
-                        <li>Start with <strong>learning objectives</strong>, then choose mechanics</li>
-                        <li>Avoid shallow &ldquo;pointsification&rdquo; &mdash; aim for <strong>meaningful engagement</strong></li>
-                        <li><strong>Iterate</strong> based on learner feedback and data</li>
-                    </ol>
-                </section>
-            </section>
-
-            <!-- REFERENCES -->
-            <section>
-                <h2>References</h2>
-                <div class="references">
-                    <ul>
-                        <li>Bartle, R. (1996). Hearts, Clubs, Diamonds, Spades: Players Who Suit MUDs.</li>
-                        <li>Csikszentmihalyi, M. (1990). <em>Flow: The Psychology of Optimal Experience.</em></li>
-                        <li>Deci, E. L., &amp; Ryan, R. M. (1985). <em>Intrinsic Motivation and Self-Determination in Human Behavior.</em></li>
-                        <li>Deterding, S., Dixon, D., Khaled, R., &amp; Nacke, L. (2011). From game design elements to gamefulness.</li>
-                        <li>Hamari, J., Koivisto, J., &amp; Sarsa, H. (2014). Does gamification work? <em>HICSS.</em></li>
-                        <li>Knowles, M. S. (1980). <em>The Modern Practice of Adult Education.</em></li>
-                        <li>Landers, R. N. (2014). Developing a theory of gamified learning. <em>Simulation &amp; Gaming.</em></li>
-                        <li>Sailer, M., &amp; Homner, L. (2020). The gamification of learning: A meta-analysis. <em>Educational Psychology Review.</em></li>
-                        <li>Subhash, S., &amp; Cudney, E. A. (2018). Gamified learning in higher education. <em>Computers in Human Behavior.</em></li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- THANK YOU / Q&A -->
-            <section data-background-color="#1a1a2e">
-                <h2 style="color: #e94560;">Thank You!</h2>
-                <p style="color: #eee; font-size: 1.2em;">Questions &amp; Discussion</p>
-                <hr class="title-hr">
-                <p style="color: #aaa;">
-                    &#128196; <a href="handout.html" style="color: #0f3460;">Download the Handout</a>
-                </p>
-            </section>
-
-        </div>
+    <div id="presentation-container"></div>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="slide-counter" id="slide-counter">1/13</div>
+    <div class="timer" id="timer">00:00</div>
+    <div id="nav-overlay"></div>
+    <div id="message-overlay"></div>
+    
+    <input type="text" id="key-trap" />
+    
+    <div id="nav-buttons">
+        <button class="nav-button" id="prev-btn">◀</button>
+        <button class="nav-button" id="next-btn">▶</button>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+    
     <script>
-        Reveal.initialize({
-            hash: true,
-            slideNumber: 'c/t',
-            showSlideNumber: 'all',
-            transition: 'slide',
-            controlsTutorial: true,
-            progress: true,
-            center: true,
-            width: 1200,
-            height: 700
+        const totalSlides = 13;
+        let currentSlide = 1;
+        let isNavigationEnabled = true;
+        let navigationTimer = null;
+        let timerRunning = false;
+        let timerStart = 0;
+        let timerInterval = null;
+        let timerElement = document.getElementById('timer');
+        let navigationHandledBySlide = false;
+        let navCallCounter = 0;
+        let slidesWithSteps = {};
+        const container = document.getElementById('presentation-container');
+
+        function startTimer() {
+            if (!timerRunning) {
+                timerElement.style.display = 'block';
+                timerRunning = true;
+                timerStart = Date.now();
+                updateTimer();
+                
+                timerInterval = setInterval(updateTimer, 1000);
+                
+                if (event && (event.key === 'a' || event.key === 'A')) {
+                    showMessage("Timer started");
+                }
+            }
+        }
+        
+        function stopTimer() {
+            if (timerRunning) {
+                timerRunning = false;
+                clearInterval(timerInterval);
+                showMessage("Timer stopped");
+            }
+        }
+        
+        function resetTimer() {
+            stopTimer();
+            timerElement.textContent = "00:00";
+            timerElement.style.display = 'none';
+        }
+        
+        function updateTimer() {
+            if (!timerRunning) return;
+            
+            const elapsedMs = Date.now() - timerStart;
+            const elapsedSecs = Math.floor(elapsedMs / 1000);
+            
+            const minutes = Math.floor(elapsedSecs / 60);
+            const seconds = elapsedSecs % 60;
+            
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        function checkAllSlidesLoaded() {
+            const loadedSlides = document.querySelectorAll('.slide-frame');
+            showMessage(`Loaded ${loadedSlides.length} of ${totalSlides} slides`);
+            
+            if (loadedSlides.length < totalSlides) {
+                for (let i = 1; i <= totalSlides; i++) {
+                    if (!document.getElementById(`slide-${i}`)) {
+                        loadSlide(i);
+                    }
+                }
+            }
+        }
+        function loadSlide(i) {
+            const iframe = document.createElement('iframe');
+            iframe.className = 'slide-frame';
+            iframe.id = `slide-${i}`;
+            // Cache buster: force browser to fetch fresh slide HTML on every page load
+            iframe.src = `slide${i}.html?v=${Date.now()}`;
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('scrolling', 'no');
+            iframe.onload = function() {
+                console.log(`Slide ${i} loaded successfully`);
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    
+                    const style = iframeDoc.createElement('style');
+                    style.textContent = `
+                        body, html {
+                            overflow: hidden !important;
+                            scrollbar-width: none !important;
+                            -ms-overflow-style: none !important;
+                        }
+                        
+                        ::-webkit-scrollbar {
+                            display: none !important;
+                        }
+                    `;
+                    iframeDoc.head.appendChild(style);
+                } catch (e) {
+                    console.error(`Could not modify iframe content for slide ${i}`, e);
+                }
+            };
+            
+            iframe.onerror = function() {
+                console.error(`Failed to load slide ${i}`);
+            };
+            
+            if (i === 1) {
+                iframe.classList.add('active');
+            }
+            
+            container.appendChild(iframe);
+        }
+        for (let i = 1; i <= totalSlides; i++) {
+            loadSlide(i);
+        }
+        function showSlide(slideNumber) {
+            if (slideNumber < 1 || slideNumber > totalSlides) return;
+            
+            const previousSlide = currentSlide;
+            
+            document.querySelectorAll('.slide-frame').forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            const slide = document.getElementById(`slide-${slideNumber}`);
+            if (slide) {
+                slide.classList.add('active');
+                currentSlide = slideNumber;
+                updateProgressBar();
+                if (slide.contentWindow) {
+                    setTimeout(() => {
+                        slide.contentWindow.postMessage('slideActive', '*');
+                    }, 50);
+                }
+                
+                if (previousSlide === 1 && currentSlide === 2 && !timerRunning) {
+                    startTimer();
+                }
+                
+                if (currentSlide === totalSlides && timerRunning) {
+                    stopTimer();
+                }
+                navigationHandledBySlide = false;
+            } else {
+                showMessage(`Error: Slide ${slideNumber} not found!`);
+                loadSlide(slideNumber);
+            }
+        }
+        
+        function goToPrevSlide() {
+            if (!isNavigationEnabled) return;
+            disableNavigation();
+            const navToken = ++navCallCounter;
+            const currentFrame = document.getElementById(`slide-${currentSlide}`);
+            if (currentFrame && currentFrame.contentWindow) {
+                currentFrame.contentWindow.postMessage('showAll', '*');
+            }
+            // Single, predictable transition
+            setTimeout(() => {
+                if (navToken !== navCallCounter) return;
+                if (currentSlide > 1) {
+                    showSlide(currentSlide - 1);
+                }
+            }, 80);
+        }
+        
+        function goToNextSlide() {
+            if (!isNavigationEnabled) return;
+            disableNavigation();
+            // Per-call token to prevent stale stepHandled responses leaking into the next nav
+            const navToken = ++navCallCounter;
+            navigationHandledBySlide = false;
+            const currentFrame = document.getElementById(`slide-${currentSlide}`);
+            if (currentFrame && currentFrame.contentWindow) {
+                currentFrame.contentWindow.postMessage('next', '*');
+                setTimeout(() => {
+                    // Only act if this is still the latest nav request
+                    if (navToken !== navCallCounter) return;
+                    if (!navigationHandledBySlide && currentSlide < totalSlides) {
+                        showSlide(currentSlide + 1);
+                    }
+                    navigationHandledBySlide = false;
+                }, 220);
+            } else {
+                if (currentSlide < totalSlides) {
+                    showSlide(currentSlide + 1);
+                }
+            }
+        }
+        
+        function disableNavigation() {
+            isNavigationEnabled = false;
+            
+            if (navigationTimer) {
+                clearTimeout(navigationTimer);
+            }
+            
+            navigationTimer = setTimeout(() => {
+                isNavigationEnabled = true;
+                document.getElementById('key-trap').focus();
+            }, 180);
+        }
+        
+        function updateProgressBar() {
+            const progressPercentage = (currentSlide - 1) / (totalSlides - 1) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+            
+            document.getElementById('slide-counter').textContent = `${currentSlide}/${totalSlides}`;
+        }
+        
+        function showMessage(message, duration = 2000) {
+            const messageOverlay = document.getElementById('message-overlay');
+            messageOverlay.textContent = message;
+            messageOverlay.style.opacity = '1';
+            
+            setTimeout(() => {
+                messageOverlay.style.opacity = '0';
+            }, duration);
+        }
+        window.addEventListener('message', function(event) {
+            const message = event.data;
+            
+            if (message === 'stepHandled') {
+                navigationHandledBySlide = true;
+            }
+            if (message && message.type === 'supportsSteps') {
+                slidesWithSteps[currentSlide] = message.steps;
+                console.log(`Slide ${currentSlide} supports ${message.steps} steps`);
+            }
         });
+        function handleKeyDown(event) {
+            if (event.repeat) return;
+            
+            switch (event.key) {
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                    goToPrevSlide();
+                    event.preventDefault();
+                    break;
+                    
+                case 'ArrowRight':
+                case 'ArrowDown':
+                    goToNextSlide();
+                    event.preventDefault();
+                    break;
+                    
+                case 'Home':
+                    if (isNavigationEnabled) {
+                        disableNavigation();
+                        showSlide(1);
+                    }
+                    event.preventDefault();
+                    break;
+                    
+                case 'End':
+                    if (isNavigationEnabled) {
+                        disableNavigation();
+                        showSlide(totalSlides);
+                    }
+                    event.preventDefault();
+                    break;
+                    
+                case 'd':
+                    checkAllSlidesLoaded();
+                    event.preventDefault();
+                    break;
+                    
+                case 'a':
+                case 'A':
+                    startTimer();
+                    event.preventDefault();
+                    break;
+            }
+        }
+        document.addEventListener('keydown', handleKeyDown);
+        const keyTrap = document.getElementById('key-trap');
+        keyTrap.addEventListener('keydown', handleKeyDown);
+        const navOverlay = document.getElementById('nav-overlay');
+        navOverlay.addEventListener('click', function(event) {
+            const x = event.clientX;
+            const width = window.innerWidth;
+            
+            if (x < width * 0.3) {
+                goToPrevSlide();
+            } else if (x > width * 0.7) {
+                goToNextSlide();
+            }
+        });
+        document.addEventListener('mousemove', function() {
+            navOverlay.style.pointerEvents = 'auto';
+            
+            clearTimeout(window.navOverlayTimer);
+            window.navOverlayTimer = setTimeout(() => {
+                navOverlay.style.pointerEvents = 'none';
+            }, 100);
+        });
+        document.getElementById('prev-btn').addEventListener('click', goToPrevSlide);
+        document.getElementById('next-btn').addEventListener('click', goToNextSlide);
+        setInterval(() => {
+            const activeElement = document.activeElement;
+            const isNavButton = activeElement.classList && activeElement.classList.contains('nav-button');
+            
+            if (!isNavButton && activeElement !== keyTrap) {
+                keyTrap.focus();
+            }
+        }, 500);
+        setInterval(() => {
+            if (!isNavigationEnabled) {
+                console.log("Navigation re-enabled by watchdog");
+                isNavigationEnabled = true;
+            }
+        }, 1500);
+        
+        setTimeout(() => {
+            keyTrap.focus();
+            setTimeout(checkAllSlidesLoaded, 1000);
+        }, 500);
+        updateProgressBar();
+        window.checkSlides = checkAllSlidesLoaded;
     </script>
 </body>
 </html>

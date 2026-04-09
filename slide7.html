@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>When Gamification Does Not Work?</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 32px 56px 28px 56px;
+            background-color: white;
+            color: #333;
+        }
+        .container {
+            max-width: 1700px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #FF6B35;
+            font-size: 38px;
+            margin: 0 0 25px 0;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+
+        .warning-strip {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            color: white;
+            padding: 20px 34px;
+            border-radius: 11px;
+            margin-bottom: 24px;
+            font-size: 21px;
+            line-height: 1.55;
+            box-shadow: 0 4px 14px rgba(192, 57, 43, 0.22);
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .warning-strip.visible { opacity: 1; transform: translateY(0); }
+        .warning-strip strong {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: #ffe4b5;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .warning-strip span { flex: 1; text-align: justify; }
+
+        /* Cards hug their content - no row stretching */
+        .pitfalls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+        .pitfall {
+            background-color: #fff8f5;
+            border-left: 5px solid #c0392b;
+            border-radius: 10px;
+            padding: 22px 26px 78px 26px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            min-height: 260px;
+            position: relative;
+        }
+        .pitfall.visible { opacity: 1; transform: translateY(0); }
+        .pitfall-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .pitfall-icon {
+            font-size: 36px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .pitfall-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #c0392b;
+            line-height: 1.2;
+        }
+        .pitfall-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #444;
+            margin-bottom: 0;
+            text-align: justify;
+        }
+        .pitfall-fix {
+            position: absolute;
+            left: 26px;
+            right: 26px;
+            bottom: 20px;
+            min-height: 60px;
+            font-size: 17px;
+            color: #2E8B57;
+            font-style: italic;
+            line-height: 1.45;
+            padding-top: 10px;
+            border-top: 1px dashed #e8d4cf;
+            text-align: justify;
+        }
+        .pitfall-fix strong { color: #2E8B57; font-style: normal; }
+
+        .takeaway-strip {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            border-radius: 11px;
+            padding: 22px 34px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            box-shadow: 0 4px 16px rgba(255, 107, 53, 0.28);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .takeaway-strip.visible { opacity: 1; transform: translateY(0); }
+        .takeaway-icon {
+            font-size: 50px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .takeaway-body { flex: 1; }
+        .takeaway-label {
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.4px;
+            color: #fff5e6;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .takeaway-text {
+            font-size: 21px;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        .pilot-questions {
+            margin-top: 6px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .pilot-questions.visible { opacity: 1; transform: translateY(0); }
+        .pilot-questions .pq-item {
+            background: linear-gradient(135deg, #FFF4EC 0%, #FFE4D1 100%);
+            border-left: 5px solid #FF6B35;
+            border-radius: 10px;
+            padding: 16px 20px;
+            font-size: 18px;
+            line-height: 1.4;
+            color: #333;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 3px 10px rgba(255, 107, 53, 0.12);
+        }
+        .pilot-questions .pq-num {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: #FF6B35;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(255, 107, 53, 0.3);
+        }
+        .pq-caption {
+            margin-top: 14px;
+            font-size: 15px;
+            color: #c0392b;
+            font-weight: 700;
+            font-style: italic;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .pq-caption.visible { opacity: 1; transform: translateY(0); }
+
+        .questions-strip {
+            margin-top: 14px;
+            background-color: #fff8f5;
+            border-left: 5px solid #FF6B35;
+            border-radius: 10px;
+            padding: 16px 26px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .questions-strip.visible { opacity: 1; transform: translateY(0); }
+        .questions-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #FF6B35;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .questions-list {
+            display: flex;
+            gap: 22px;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+        .questions-list li {
+            list-style: none;
+            font-size: 17px;
+            color: #333;
+            line-height: 1.4;
+        }
+        .questions-list li strong { color: #FF6B35; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>When Gamification Does <em>Not</em> Work?</h1>
+
+        <div class="warning-strip" id="warn">
+            <strong>The uncomfortable truth</strong>
+            <span>Bolt points onto a course that does not engage and they will not save it. Pedagogy first — gamification amplifies, it does not manufacture.</span>
+        </div>
+
+        <div class="pitfalls">
+            <div class="pitfall" id="p1">
+                <div class="pitfall-head">
+                    <span class="pitfall-icon">🎁</span>
+                    <span class="pitfall-title">Reward inflation</span>
+                </div>
+                <div class="pitfall-text">Pull the points away — engagement collapses with them.</div>
+                <div class="pitfall-fix"><strong>Fix:</strong> Reward progress, not attendance. Badges = recognition, not bribes.</div>
+            </div>
+            <div class="pitfall" id="p2">
+                <div class="pitfall-head">
+                    <span class="pitfall-icon">⚖️</span>
+                    <span class="pitfall-title">Public leaderboards humiliate</span>
+                </div>
+                <div class="pitfall-text">For adults returning after decades, public ranking discourages — it does not motivate.</div>
+                <div class="pitfall-fix"><strong>Fix:</strong> Rank against past self. Personal progress, not class league.</div>
+            </div>
+            <div class="pitfall" id="p3">
+                <div class="pitfall-head">
+                    <span class="pitfall-icon">🥦</span>
+                    <span class="pitfall-title">"Chocolate-covered broccoli"</span>
+                </div>
+                <div class="pitfall-text">A boring task in cartoon wrapping is still boring. Adults notice — and trust you less.</div>
+                <div class="pitfall-fix"><strong>Fix:</strong> Fix the task, not the wrapper. Would it work <em>without</em> the points?</div>
+            </div>
+            <div class="pitfall" id="p4">
+                <div class="pitfall-head">
+                    <span class="pitfall-icon">⚙️</span>
+                    <span class="pitfall-title">Tool overload &amp; setup tax</span>
+                </div>
+                <div class="pitfall-text">Three apps, two accounts, one frustrated learner walking out.</div>
+                <div class="pitfall-fix"><strong>Fix:</strong> One tool. One login. Browser-based. Test on the least confident learner.</div>
+            </div>
+            <div class="pitfall" id="p5">
+                <div class="pitfall-head">
+                    <span class="pitfall-icon">🧓</span>
+                    <span class="pitfall-title">Wrong audience, wrong tone</span>
+                </div>
+                <div class="pitfall-text">Cartoon visuals and "Level Up!" pop-ups feel patronising to voluntary adult learners.</div>
+                <div class="pitfall-fix"><strong>Fix:</strong> Match the register. Grown-up gamification for grown-ups.</div>
+            </div>
+            <div class="pitfall" id="p6">
+                <div class="pitfall-head">
+                    <span class="pitfall-icon">📊</span>
+                    <span class="pitfall-title">No feedback loop</span>
+                </div>
+                <div class="pitfall-text">Pilot a tool. See no change. Conclude it "does not work" — without ever asking the learners.</div>
+                <div class="pitfall-fix"><strong>Fix:</strong> Ask*. Adapt or kill. Do not hope.</div>
+            </div>
+        </div>
+
+        <div class="takeaway-strip" id="take">
+            <div class="takeaway-icon">🧭</div>
+            <div class="takeaway-body">
+                <div class="takeaway-label">THE TAKEAWAY</div>
+                <div class="takeaway-text">Most failed gamification projects fail quietly — because no-one asked the learners.</div>
+            </div>
+        </div>
+
+        <div class="pq-caption" id="pqc">* The three questions to ask after each pilot:</div>
+        <div class="pilot-questions" id="pq">
+            <div class="pq-item"><span class="pq-num">1</span>Did it help you learn?</div>
+            <div class="pq-item"><span class="pq-num">2</span>What would you change?</div>
+            <div class="pq-item"><span class="pq-num">3</span>Would you keep using it?</div>
+        </div>
+    </div>
+
+    <script>
+        const ids = ['warn', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'take', 'pqc', 'pq'];
+        function reveal() {
+            ids.forEach((id, i) => {
+                setTimeout(() => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('visible');
+                }, i * 140);
+            });
+        }
+        function reset() {
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('visible');
+            });
+        }
+        window.addEventListener('message', function(event) {
+            if (event.data === 'slideActive') { reset(); setTimeout(reveal, 100); }
+            if (event.data === 'showAll') {
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('visible');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

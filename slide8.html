@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study: Hand-Crafts</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 32px 56px 28px 56px;
+            background-color: white;
+            color: #333;
+        }
+        .container {
+            max-width: 1700px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #FF6B35;
+            font-size: 38px;
+            margin: 0 0 6px 0;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+        .case-tag {
+            text-align: center;
+            color: #004E89;
+            font-size: 18px;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        .case-tag .badge {
+            background-color: #FF6B35;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            margin-right: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            vertical-align: middle;
+        }
+
+        .scenario-strip {
+            background: linear-gradient(135deg, #1A659E 0%, #004E89 100%);
+            color: white;
+            padding: 20px 32px;
+            border-radius: 11px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(0, 78, 137, 0.18);
+            font-size: 19px;
+            line-height: 1.55;
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .scenario-strip.visible { opacity: 1; transform: translateY(0); }
+        .scenario-strip strong {
+            color: #F7C59F;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .scenario-strip span { flex: 1; text-align: justify; }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 26px;
+        }
+        /* Left: 4 step cards in 2x2 - no row stretching */
+        .left-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 1fr;
+            gap: 20px;
+        }
+        .step-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 22px 26px 20px 26px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            border: 1px solid #e0e0e0;
+            border-top: 4px solid #FF6B35;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .step-card.visible { opacity: 1; transform: translateY(0); }
+        .step-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 9px;
+        }
+        .step-num {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #FF6B35;
+            color: white;
+            font-weight: bold;
+            font-size: 21px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(255, 107, 53, 0.3);
+        }
+        .step-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #004E89;
+            line-height: 1.18;
+        }
+        .step-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #444;
+            text-align: justify;
+            margin-bottom: 12px;
+            flex-grow: 1;
+        }
+        .step-tool {
+            font-size: 14px;
+            color: #FF6B35;
+            font-weight: 600;
+            background-color: rgba(255, 107, 53, 0.1);
+            padding: 4px 10px;
+            border-radius: 4px;
+            align-self: flex-start;
+        }
+
+        .right-col {
+            background-color: #EFEFD0;
+            border-radius: 11px;
+            padding: 22px 24px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            opacity: 0;
+            transform: translateX(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .right-col.visible { opacity: 1; transform: translateX(0); }
+        .right-title {
+            color: #FF6B35;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+        .badge-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .achievement {
+            background-color: white;
+            border-radius: 7px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .achievement-icon {
+            font-size: 28px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .achievement-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: #004E89;
+            line-height: 1.3;
+        }
+        .takeaway {
+            margin-top: 16px;
+            background-color: white;
+            border-radius: 7px;
+            padding: 14px 18px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            border-left: 4px solid #FF6B35;
+            text-align: justify;
+        }
+        .takeaway strong { color: #FF6B35; }
+
+        /* Decorative game pieces row at bottom */
+        .decorative-section {
+            width: 100%;
+            max-width: 1400px;
+            margin: 18px auto 0 auto;
+            display: none;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+            height: 70px;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .decorative-section.visible { opacity: 1; }
+        .gp { width: 56px; height: 56px; }
+        .gp svg { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Case Study: Hand-Crafts</h1>
+        <div class="case-tag"><span class="badge">PRIMARY EXAMPLE</span>12-Week Textile Course · Mixed Ages</div>
+
+        <div class="scenario-strip" id="scen">
+            <strong>Situation</strong>
+            <span>Weekly two-hour textile group. Two recurring problems: learners lose track of their own progress between sessions and 5–8 week drop-off — not from boredom, but from busy life.</span>
+        </div>
+
+        <div class="layout">
+            <div class="left-col">
+                <div class="step-card" id="s1">
+                    <div class="step-head">
+                        <div class="step-num">1</div>
+                        <div class="step-title">Shared digital progress wall</div>
+                    </div>
+                    <div class="step-text">Twelve stages from "first stitch" to "finished piece".<br>Each learner's card moves across the board.<br>Visible between sessions.</div>
+                    <span class="step-tool">Trello · Padlet · WhatsApp</span>
+                </div>
+                <div class="step-card" id="s2">
+                    <div class="step-head">
+                        <div class="step-num">2</div>
+                        <div class="step-title">Photo-based skill badges</div>
+                    </div>
+                    <div class="step-text">Teacher photographs each new technique mastered.<br>The photo becomes the learner's badge for that skill.<br>Collected in a shared Pinterest or WhatsApp album.</div>
+                    <span class="step-tool">Pinterest · WhatsApp album · Canva</span>
+                </div>
+                <div class="step-card" id="s3">
+                    <div class="step-head">
+                        <div class="step-num">3</div>
+                        <div class="step-title">Weekly micro-quests via group chat</div>
+                    </div>
+                    <div class="step-text">Monday morning prompt: "try one new stitch".<br>Optional, no penalty.<br>Photos in the group chat.</div>
+                    <span class="step-tool">WhatsApp · Telegram · Teams</span>
+                </div>
+                <div class="step-card" id="s4">
+                    <div class="step-head">
+                        <div class="step-num">4</div>
+                        <div class="step-title">Digital exhibition finale</div>
+                    </div>
+                    <div class="step-text">Final session: Google Slides gallery of every finished piece.<br>Printable certificate each learner keeps.</div>
+                    <span class="step-tool">Google Slides · Canva</span>
+                </div>
+            </div>
+
+            <div class="right-col" id="right">
+                <div class="right-title">What changed for the learners</div>
+                <div class="badge-list">
+                    <div class="achievement"><div class="achievement-icon">📍</div><div class="achievement-name">Visible progress between sessions</div></div>
+                    <div class="achievement"><div class="achievement-icon">🤝</div><div class="achievement-name">Stronger group bond</div></div>
+                    <div class="achievement"><div class="achievement-icon">📉</div><div class="achievement-name">Lower drop-off mid-course</div></div>
+                    <div class="achievement"><div class="achievement-icon">📱</div><div class="achievement-name">Confidence with basic apps</div></div>
+                    <div class="achievement"><div class="achievement-icon">🎓</div><div class="achievement-name">Personal portfolio to keep</div></div>
+                    <div class="achievement"><div class="achievement-icon">✨</div><div class="achievement-name">Sense of finished journey</div></div>
+                </div>
+                <div class="takeaway">
+                    <strong>Key point:</strong> WhatsApp, Google Slides, phone camera — that is all you need.<br>The craft session does the work; gamification just makes progress visible.
+                </div>
+            </div>
+        </div>
+
+        <div class="decorative-section" id="decoration">
+            <div class="gp"><svg viewBox="0 0 100 100"><rect x="10" y="10" width="80" height="80" rx="15" fill="rgba(255,107,53,0.2)" stroke="#FF6B35" stroke-width="2"/><circle cx="25" cy="25" r="6" fill="#FF6B35"/><circle cx="75" cy="25" r="6" fill="#FF6B35"/><circle cx="25" cy="75" r="6" fill="#FF6B35"/><circle cx="75" cy="75" r="6" fill="#FF6B35"/><circle cx="50" cy="50" r="6" fill="#FF6B35"/></svg></div>
+            <div class="gp"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="rgba(255,107,53,0.2)" stroke="#FF6B35" stroke-width="2"/><path d="M50 25 L57 40 L75 42 L62 53 L65 70 L50 62 L35 70 L38 53 L25 42 L43 40 Z" fill="#FF6B35"/></svg></div>
+            <div class="gp"><svg viewBox="0 0 100 100"><path d="M30 20 L70 20 L70 30 C70 45 65 55 50 60 C35 55 30 45 30 30 Z" fill="rgba(255,107,53,0.2)" stroke="#FF6B35" stroke-width="2"/><rect x="30" y="15" width="40" height="5" fill="rgba(255,107,53,0.4)" stroke="#FF6B35" stroke-width="1.5"/><rect x="45" y="60" width="10" height="25" fill="rgba(255,107,53,0.4)" stroke="#FF6B35" stroke-width="1.5"/><rect x="35" y="85" width="30" height="5" fill="rgba(255,107,53,0.4)" stroke="#FF6B35" stroke-width="1.5"/></svg></div>
+            <div class="gp"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="rgba(255,107,53,0.2)" stroke="#FF6B35" stroke-width="2"/><text x="50" y="60" text-anchor="middle" font-family="Arial" font-weight="bold" font-size="30" fill="#FF6B35">+50</text></svg></div>
+            <div class="gp"><svg viewBox="0 0 100 100"><rect x="20" y="80" width="60" height="10" rx="3" fill="rgba(255,107,53,0.2)" stroke="#FF6B35" stroke-width="1.5"/><rect x="30" y="65" width="40" height="15" rx="3" fill="rgba(255,107,53,0.3)" stroke="#FF6B35" stroke-width="1.5"/><rect x="35" y="50" width="30" height="15" rx="3" fill="rgba(255,107,53,0.4)" stroke="#FF6B35" stroke-width="1.5"/><rect x="40" y="35" width="20" height="15" rx="3" fill="rgba(255,107,53,0.6)" stroke="#FF6B35" stroke-width="1.5"/><rect x="45" y="20" width="10" height="15" rx="3" fill="rgba(255,107,53,0.8)" stroke="#FF6B35" stroke-width="1.5"/></svg></div>
+        </div>
+    </div>
+
+    <script>
+        const ids = ['scen', 's1', 's2', 's3', 's4', 'right', 'decoration'];
+        function reveal() {
+            ids.forEach((id, i) => {
+                setTimeout(() => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('visible');
+                }, i * 180);
+            });
+        }
+        function reset() {
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('visible');
+            });
+        }
+        window.addEventListener('message', function(event) {
+            if (event.data === 'slideActive') { reset(); setTimeout(reveal, 100); }
+            if (event.data === 'showAll') {
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('visible');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

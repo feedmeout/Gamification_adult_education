@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamification Elements: A Visual Walk-through</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 15px 70px;
+            height: 100vh;
+            overflow: hidden;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-top: 5px; /* Added small top padding to match other slides */
+        }
+        
+        h1 {
+            color: #FF6B35;
+            margin-bottom: 25px; /* Increased from 0 to match other slides */
+            font-size: 38px; /* Increased from 34px to match slides 2-4 */
+            margin-top: 0;
+            font-weight: bold; /* Ensuring bold weight like other slides */
+        }
+        
+        .gamification-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 70px;
+            flex: 1;
+            max-height: calc(100vh - 80px);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .gamification-grid.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .gamification-panel {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 100%;
+            max-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .panel-header {
+            background-color: #FF6B35;
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 20px;
+            letter-spacing: 0.5px;
+        }
+        
+        .panel-content {
+            padding: 15px 20px;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* Points & Badges System */
+        .points-system {
+            display: flex;
+            justify-content: space-between;
+            background-color: #333;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+        }
+        
+        .points-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .points-icon {
+            font-size: 24px;
+            color: gold;
+        }
+        
+        .points-value {
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        .level-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .level-icon {
+            font-size: 24px;
+            color: #FF6B35;
+        }
+        
+        .level-value {
+            background-color: #FF6B35;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .progress-container {
+            margin-bottom: 30px;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progress-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .progress-value {
+            color: #FF6B35;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .progress-bar {
+            height: 18px;
+            background-color: #eee;
+            border-radius: 9px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 45%;
+            background: linear-gradient(90deg, #6A0DAD, #FF6B35);
+            border-radius: 9px;
+        }
+        
+        .progress-milestones {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+        }
+        
+        .milestone {
+            width: 34px;
+            height: 34px;
+            background-color: #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #666;
+            position: relative;
+        }
+        
+        .milestone.active {
+            background-color: #FFD700;
+            color: #333;
+            font-weight: bold;
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .milestone.completed {
+            background-color: #FF6B35;
+            color: white;
+            font-weight: bold;
+            font-size: 18px; /* Increased for checkmark */
+        }
+        
+        /* Removed the ID-specific styling since we are changing the content */
+        
+        .badges-display {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            justify-content: space-around;
+        }
+        
+        .badge {
+            width: 80px;
+            text-align: center;
+            padding-top: 10px;
+        }
+        
+        .badge-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 26px;
+            color: #aaa;
+            position: relative;
+        }
+        
+        .badge-icon.earned {
+            background-color: #FFD700;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .badge-icon.earned::after {
+            content: "✓";
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #4CAF50;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border: 2px solid white;
+        }
+        
+        .badge-name {
+            font-size: 13px;
+            color: #666;
+            font-weight: bold;
+        }
+        
+        .badge.earned .badge-name {
+            color: #333;
+            font-weight: bold;
+        }
+        
+        /* Achievement Example */
+        .achievement-example {
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid gold;
+        }
+        
+        .achievement-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .achievement-content {
+            flex: 1;
+        }
+        
+        .achievement-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 17px;
+        }
+        
+        .achievement-desc {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+        
+        /* Leaderboard */
+        .leaderboard {
+            margin-bottom: 0;
+        }
+        
+        .leaderboard-title {
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 15px;
+        }
+        
+        .leaderboard-table th {
+            background-color: #eee;
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .leaderboard-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .leaderboard-table tr.current-user {
+            background-color: rgba(255, 107, 53, 0.1);
+            font-weight: bold;
+        }
+        
+        .rank {
+            width: 32px;
+            height: 32px;
+            background-color: #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto;
+        }
+        
+        .rank.top-1 {
+            background-color: gold;
+            color: white;
+            box-shadow: 0 3px 8px rgba(255, 215, 0, 0.3);
+        }
+        
+        .rank.top-2 {
+            background-color: silver;
+            color: white;
+            box-shadow: 0 3px 8px rgba(192, 192, 192, 0.3);
+        }
+        
+        .rank.top-3 {
+            background-color: #cd7f32;
+            color: white;
+            box-shadow: 0 3px 8px rgba(205, 127, 50, 0.3);
+        }
+        
+        /* Rewards System */
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 12px;
+        }
+        
+        .reward-item {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .reward-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .reward-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .reward-name {
+            font-size: 13px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+        
+        .reward-cost {
+            font-size: 12px;
+            color: #FF6B35;
+            font-weight: bold;
+        }
+        
+        /* Level completion card with more compact style */
+        .level-completion {
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .completion-title {
+            font-size: 20px;
+            color: gold;
+            margin-bottom: 12px;
+        }
+        
+        .points-summary {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin: 0 auto 12px;
+            max-width: 260px;
+            font-size: 15px;
+        }
+        
+        .points-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+        
+        .points-total {
+            padding-top: 6px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            color: gold;
+            font-weight: bold;
+        }
+        
+        .achievement-badge {
+            width: 50px;
+            height: 50px;
+            background-color: #FF6B35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto 8px;
+            color: white;
+        }
+        
+        /* Second panel set for step revelation */
+        .gamification-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 70px;
+            margin-top: 15px;
+            flex: 1;
+            max-height: calc(100vh - 80px);
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .gamification-grid-2.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Media queries for responsiveness */
+        @media (max-width: 1800px) {
+            .container {
+                padding: 15px 50px;
+            }
+            
+            .gamification-grid, .gamification-grid-2 {
+                gap: 50px;
+            }
+        }
+        
+        @media (max-width: 1400px) {
+            .container {
+                padding: 15px 40px;
+            }
+            
+            .gamification-grid, .gamification-grid-2 {
+                gap: 40px;
+            }
+            
+            .badge-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                padding: 15px 30px;
+            }
+            
+            .gamification-grid, .gamification-grid-2 {
+                gap: 30px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .gamification-grid, .gamification-grid-2 {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gamification Elements in Education</h1>
+        </header>
+        
+        <!-- First step of content (first two panels) -->
+        <div class="gamification-grid" id="first-grid">
+            <!-- Points & Badges Panel -->
+            <div class="gamification-panel">
+                <div class="panel-header">Points & Achievements System</div>
+                <div class="panel-content">
+                    <div class="points-system">
+                        <div class="points-display">
+                            <div class="points-icon">⭐</div>
+                            <div class="points-value">125</div>
+                        </div>
+                        <div class="level-display">
+                            <div class="level-icon">🏆</div>
+                            <div class="level-value">2</div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <div class="progress-title">Progress to Level 2</div>
+                            <div class="progress-value">45%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%;"></div>
+                        </div>
+                        <div class="progress-milestones">
+                            <div class="milestone completed">✓</div>
+                            <div class="milestone active">2</div>
+                            <div class="milestone">3</div>
+                            <div class="milestone">4</div>
+                            <div class="milestone">5</div>
+                        </div>
+                    </div>
+                    
+                    <div class="badges-display">
+                        <div class="badge earned">
+                            <div class="badge-icon earned">🔍</div>
+                            <div class="badge-name">Explorer</div>
+                        </div>
+                        <div class="badge earned">
+                            <div class="badge-icon earned">📝</div>
+                            <div class="badge-name">Writer</div>
+                        </div>
+                        <div class="badge">
+                            <div class="badge-icon">🧩</div>
+                            <div class="badge-name">Problem Solver</div>
+                        </div>
+                        <div class="badge">
+                            <div class="badge-icon">🏛️</div>
+                            <div class="badge-name">Architect</div>
+                        </div>
+                        <div class="badge">
+                            <div class="badge-icon">🔬</div>
+                            <div class="badge-name">Scientist</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Personal Progress Panel -->
+            <div class="gamification-panel">
+                <div class="panel-header">Personal Progress</div>
+                <div class="panel-content">
+                    <div class="leaderboard">
+                        <div class="leaderboard-title">Your Journey So Far</div>
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Week</th>
+                                    <th>Milestone</th>
+                                    <th>Level</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div class="rank">1</div></td>
+                                    <td>First steps</td>
+                                    <td>1</td>
+                                    <td>40</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="rank">2</div></td>
+                                    <td>Built confidence</td>
+                                    <td>1</td>
+                                    <td>85</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="rank">3</div></td>
+                                    <td>Helped a peer</td>
+                                    <td>2</td>
+                                    <td>140</td>
+                                </tr>
+                                <tr>
+                                    <td><div class="rank">4</div></td>
+                                    <td>Tried something new</td>
+                                    <td>2</td>
+                                    <td>190</td>
+                                </tr>
+                                <tr class="current-user">
+                                    <td><div class="rank top-1">5</div></td>
+                                    <td>This week — keep going!</td>
+                                    <td>3</td>
+                                    <td>240</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second step of content (second two panels) -->
+        <div class="gamification-grid-2" id="second-grid">
+            <!-- Achievement Notification -->
+            <div class="gamification-panel">
+                <div class="panel-header">Achievements & Recognition</div>
+                <div class="panel-content">
+                    <div class="achievement-example">
+                        <div class="achievement-icon">🏆</div>
+                        <div class="achievement-content">
+                            <div class="achievement-title">Achievement Unlocked!</div>
+                            <div class="achievement-desc">
+                                You completed the first challenge and earned 25 points!
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="level-completion">
+                        <div class="completion-title">Level Complete!</div>
+                        
+                        <div class="points-summary">
+                            <div class="points-row">
+                                <div>Base points:</div>
+                                <div>50</div>
+                            </div>
+                            <div class="points-row">
+                                <div>Diligence bonus:</div>
+                                <div>+20</div>
+                            </div>
+                            <div class="points-row points-total">
+                                <div>Total:</div>
+                                <div>70</div>
+                            </div>
+                        </div>
+                        
+                        <div class="achievement-badge">🧩</div>
+                        <div>Skilled Problem Solver</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Rewards Panel -->
+            <div class="gamification-panel">
+                <div class="panel-header">Rewards System</div>
+                <div class="panel-content">
+                    <div class="rewards-grid">
+                        <!-- Row 1 -->
+                        <div class="reward-item">
+                            <div class="reward-icon">📚</div>
+                            <div class="reward-name">Bonus material</div>
+                            <div class="reward-cost">50 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">⏱️</div>
+                            <div class="reward-name">More time</div>
+                            <div class="reward-cost">75 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🛠️</div>
+                            <div class="reward-name">Extra tools</div>
+                            <div class="reward-cost">100 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🔓</div>
+                            <div class="reward-name">Unlock exercises</div>
+                            <div class="reward-cost">150 Points</div>
+                        </div>
+                        
+                        <!-- Row 2 -->
+                        <div class="reward-item">
+                            <div class="reward-icon">🎮</div>
+                            <div class="reward-name">Mini-game</div>
+                            <div class="reward-cost">200 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🏆</div>
+                            <div class="reward-name">Digital trophy</div>
+                            <div class="reward-cost">225 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🎨</div>
+                            <div class="reward-name">Profile customisation</div>
+                            <div class="reward-cost">175 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🎯</div>
+                            <div class="reward-name">New challenges</div>
+                            <div class="reward-cost">250 Points</div>
+                        </div>
+                        
+                        <!-- Row 3 -->
+                        <div class="reward-item">
+                            <div class="reward-icon">💎</div>
+                            <div class="reward-name">Rare collectibles</div>
+                            <div class="reward-cost">300 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🎭</div>
+                            <div class="reward-name">Special roles</div>
+                            <div class="reward-cost">275 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🎵</div>
+                            <div class="reward-name">Music themes</div>
+                            <div class="reward-cost">125 Points</div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🔮</div>
+                            <div class="reward-name">Hidden content</div>
+                            <div class="reward-cost">350 Points</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Track slide state
+        let hasEnteredSlide = false;
+        let slideStep = 0;
+        
+        // Get HTML elements
+        const firstGrid = document.getElementById('first-grid');
+        const secondGrid = document.getElementById('second-grid');
+        
+        // Function to handle key events for step-by-step reveal
+        function handleKeyEvent(event) {
+            if (event.key === 'ArrowRight') {
+                if (slideStep === 0) {
+                    firstGrid.classList.add('visible');
+                    slideStep = 1;
+                    event.stopPropagation();
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage('stepHandled', '*');
+                    }
+                }
+                else if (slideStep === 1) {
+                    secondGrid.classList.add('visible');
+                    slideStep = 2;
+                    event.stopPropagation();
+                    if (window.parent && window.parent !== window) {
+                        window.parent.postMessage('stepHandled', '*');
+                    }
+                }
+            }
+            if (event.key === 'ArrowLeft') {
+                // When going back, show everything
+                firstGrid.classList.add('visible');
+                secondGrid.classList.add('visible');
+                slideStep = 2;
+            }
+        }
+        
+        // Add key event listener
+        document.addEventListener('keydown', handleKeyEvent);
+        
+        // Initialize slide when it becomes active
+        function markAsEntered() {
+            if (!hasEnteredSlide) {
+                hasEnteredSlide = true;
+                slideStep = 0;
+                firstGrid.classList.remove('visible');
+                secondGrid.classList.remove('visible');
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ 
+                        type: 'supportsSteps', 
+                        steps: 3
+                    }, '*');
+                }
+            }
+        }
+        
+        // Listen for messages from parent window
+        window.addEventListener('message', function(event) {
+            const message = event.data;
+            
+            if (message === 'slideActive') {
+                markAsEntered();
+                console.log('Slide 5 is now active');
+            }
+            
+            if (message === 'showAll') {
+                firstGrid.classList.add('visible');
+                secondGrid.classList.add('visible');
+                slideStep = 2;
+                console.log('Showing all content');
+            }
+            
+            if (message === 'next') {
+                handleKeyEvent({ 
+                    key: 'ArrowRight', 
+                    stopPropagation: function(){} 
+                });
+                console.log('Next step triggered');
+            }
+        });
+        
+        // When the slide loads, inform the parent
+        window.onload = function() {
+            console.log("Slide 5 loaded");
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage('slideActive', '*');
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Gamification?</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 34px 56px 30px 56px;
+            background-color: white;
+            color: #333;
+        }
+        .container {
+            max-width: 1700px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #FF6B35;
+            font-size: 38px;
+            margin: 0 0 25px 0;
+            text-align: center;
+            font-weight: bold;
+            line-height: 1.1;
+        }
+        .subtitle {
+            text-align: center;
+            color: #004E89;
+            font-size: 20px;
+            margin-bottom: 22px;
+            font-weight: 400;
+        }
+
+        .top-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 34px;
+            margin-bottom: 28px;
+        }
+        .context-card {
+            border-radius: 14px;
+            padding: 30px 36px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .context-card.visible { opacity: 1; transform: translateY(0); }
+        .context-card.left {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+        }
+        .context-card.right {
+            background: linear-gradient(135deg, #1A659E 0%, #004E89 100%);
+            color: white;
+        }
+        .context-card h3 {
+            margin: 0 0 14px 0;
+            font-size: 27px;
+            font-weight: 700;
+        }
+        .context-card p {
+            margin: 0 0 12px 0;
+            font-size: 22px;
+            line-height: 1.5;
+            text-align: justify;
+        }
+        .context-card p:last-child { margin-bottom: 0; }
+        .context-card .highlight {
+            background-color: rgba(255, 255, 255, 0.22);
+            padding: 1px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .offers-header {
+            text-align: center;
+            color: #004E89;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            line-height: 1.2;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .offers-header.visible { opacity: 1; transform: translateY(0); }
+        .offers-header span { color: #FF6B35; }
+
+        /* Slide-4-style: 2x2 grid, 30px padding, content fills naturally */
+        .offers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+        .offer-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 30px 34px;
+            border: 1px solid #e0e0e0;
+            border-left: 5px solid #FF6B35;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 22px;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .offer-card.visible { opacity: 1; transform: translateY(0); }
+        .offer-icon {
+            font-size: 54px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .offer-body { flex: 1; }
+        .offer-title {
+            font-size: 25px;
+            font-weight: 700;
+            color: #FF6B35;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+        .offer-text {
+            font-size: 19px;
+            line-height: 1.5;
+            color: #444;
+            text-align: justify;
+        }
+
+        .bottom-strip {
+            background: linear-gradient(135deg, #FFF4EC 0%, #FFE4D1 100%);
+            border-left: 5px solid #FF6B35;
+            border-right: 5px solid #FF6B35;
+            border-radius: 12px;
+            padding: 22px 34px;
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            box-shadow: 0 4px 14px rgba(255, 107, 53, 0.14);
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .bottom-strip.visible { opacity: 1; transform: translateY(0); }
+        .strip-icon {
+            font-size: 46px;
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        .strip-text {
+            font-size: 22px;
+            line-height: 1.5;
+            color: #333;
+            text-align: justify;
+            flex: 1;
+        }
+        .strip-text strong { color: #FF6B35; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Why Gamification?</h1>
+
+        <div class="top-row">
+            <div class="context-card left" id="ctx1">
+                <h3>Where are the centres today?</h3>
+                <p>Good work happens — but <span class="highlight">informally, individually, rarely shared</span>.</p>
+                <p>Two centres 10 km apart solving the same problem in different ways.</p>
+            </div>
+            <div class="context-card right" id="ctx2">
+                <h3>Where does pedagogical innovation fit?</h3>
+                <p>Pedagogical innovation turns scattered practice into something <span class="highlight">repeatable</span>.</p>
+                <p>Gamification is one such tool: concrete, low-cost, already familiar to learners.</p>
+            </div>
+        </div>
+
+        <div class="offers-header" id="offers-header">What it offers <span>in practice</span></div>
+
+        <div class="offers-grid">
+            <div class="offer-card" id="o1">
+                <div class="offer-icon">💰</div>
+                <div class="offer-body">
+                    <div class="offer-title">Low cost, low risk</div>
+                    <div class="offer-text">No licences. No specialist software. A failed pilot costs an afternoon.</div>
+                </div>
+            </div>
+            <div class="offer-card" id="o2">
+                <div class="offer-icon">🧩</div>
+                <div class="offer-body">
+                    <div class="offer-title">Adaptable across subjects</div>
+                    <div class="offer-text">Quests, streaks, progress walls, badges — same patterns work across languages, crafts, wellbeing, history, cooking.</div>
+                </div>
+            </div>
+            <div class="offer-card" id="o3">
+                <div class="offer-icon">📱</div>
+                <div class="offer-body">
+                    <div class="offer-title">Learners already speak this language</div>
+                    <div class="offer-text">Streaks, badges, progress bars — your learners already see these in fitness, banking, language apps. The mental model is there.</div>
+                </div>
+            </div>
+            <div class="offer-card" id="o4">
+                <div class="offer-icon">⏱️</div>
+                <div class="offer-body">
+                    <div class="offer-title">Fits your existing format</div>
+                    <div class="offer-text">Drops into a 90-minute session without redesigning the curriculum.<br>Quiet signals on top of teaching that already works.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-strip" id="strip">
+            <div class="strip-icon">🌐</div>
+            <div class="strip-text">
+                One centre, one course, one term is enough to learn from. Share what worked — and what did not.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Two chunks:
+        //   chunk 0 — context boxes (auto on entry)
+        //   chunk 1 — four offer cards + bottom strip (on first ArrowRight / 'next')
+        const stepGroups = [
+            ['ctx1', 'ctx2'],
+            ['offers-header', 'o1', 'o2', 'o3', 'o4', 'strip']
+        ];
+        let currentStep = 0;
+        let hasEnteredSlide = false;
+
+        function revealGroup(ids, stagger) {
+            ids.forEach((id, i) => {
+                setTimeout(() => {
+                    const el = document.getElementById(id);
+                    if (el) el.classList.add('visible');
+                }, i * stagger);
+            });
+        }
+
+        function hideAll() {
+            stepGroups.flat().forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('visible');
+            });
+        }
+
+        function showAll() {
+            stepGroups.flat().forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('visible');
+            });
+            currentStep = stepGroups.length;
+        }
+
+        function advance() {
+            if (currentStep < stepGroups.length) {
+                revealGroup(stepGroups[currentStep], 170);
+                currentStep++;
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage('stepHandled', '*');
+                }
+                return true;
+            }
+            return false;
+        }
+
+        function initializeSlide() {
+            hasEnteredSlide = true;
+            currentStep = 0;
+            hideAll();
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage({ type: 'supportsSteps', steps: stepGroups.length }, '*');
+            }
+            // Auto-show first chunk on entry
+            setTimeout(advance, 120);
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'ArrowRight') {
+                if (!hasEnteredSlide) return;
+                if (currentStep < stepGroups.length) {
+                    advance();
+                    event.stopPropagation();
+                }
+            }
+        }
+
+        window.addEventListener('message', function(event) {
+            const message = event.data;
+            if (message === 'slideActive') {
+                initializeSlide();
+            } else if (message === 'showAll') {
+                showAll();
+            } else if (message === 'next') {
+                advance();
+            }
+        });
+
+        document.addEventListener('keydown', handleKeyPress);
+
+        window.onload = function() {
+            if (window === window.parent || document.visibilityState === 'visible') {
+                initializeSlide();
+            }
+        };
+    </script>
+</body>
+</html>
