@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handout &mdash; Gamification in Adult Education</title>
+    <style>
+        /* ===== SCREEN STYLES ===== */
+        :root {
+            --primary: #1a1a2e;
+            --accent: #e94560;
+            --accent2: #0f3460;
+            --bg: #f9fafb;
+            --card-bg: #ffffff;
+            --text: #333;
+            --text-light: #666;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Top bar */
+        .top-bar {
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .top-bar a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        .top-bar a:hover { color: #fff; }
+
+        .btn-download {
+            background: var(--accent);
+            color: #fff !important;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-download:hover { background: #c73e54; }
+
+        /* Container */
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 32px 24px 64px;
+        }
+
+        /* Header */
+        .handout-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 3px solid var(--accent);
+        }
+        .handout-header h1 {
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .handout-header p {
+            color: var(--text-light);
+            font-size: 1.05em;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 32px;
+        }
+        .section h2 {
+            font-size: 1.35em;
+            color: var(--accent2);
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 6px;
+            margin-bottom: 14px;
+        }
+        .section h3 {
+            font-size: 1.05em;
+            color: var(--primary);
+            margin: 14px 0 6px;
+        }
+        .section p, .section li {
+            font-size: 0.95em;
+            margin-bottom: 6px;
+        }
+        .section ul, .section ol {
+            padding-left: 22px;
+        }
+
+        /* Definition box */
+        .definition {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 10px 0 16px;
+            font-style: italic;
+        }
+
+        /* Key concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+            margin: 12px 0;
+        }
+        .concept-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+            border-top: 3px solid var(--accent);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .concept-card h4 {
+            color: var(--primary);
+            margin-bottom: 4px;
+            font-size: 0.95em;
+        }
+        .concept-card p {
+            font-size: 0.82em;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* Two column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 12px 0;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88em;
+            margin: 10px 0;
+        }
+        th {
+            background: var(--primary);
+            color: #fff;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tr:nth-child(even) td {
+            background: #f5f5f5;
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist li {
+            padding: 4px 0 4px 28px;
+            position: relative;
+        }
+        .checklist li::before {
+            content: "\2610";
+            position: absolute;
+            left: 2px;
+            font-size: 1.1em;
+        }
+
+        /* Tip box */
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 10px 0;
+        }
+        .tip-box strong {
+            color: #2e7d32;
+        }
+
+        /* Warning box */
+        .warning-box {
+            background: #fce4ec;
+            border-left: 5px solid #e94560;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 10px 0;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.82em;
+            color: var(--text-light);
+        }
+        .references li {
+            margin-bottom: 4px;
+        }
+
+        /* Footer */
+        .handout-footer {
+            text-align: center;
+            color: #999;
+            font-size: 0.8em;
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Download instructions modal */
+        .pdf-instructions {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+        .pdf-instructions.show { display: flex; }
+        .pdf-modal {
+            background: #fff;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .pdf-modal h3 { margin-bottom: 14px; color: var(--primary); }
+        .pdf-modal ol {
+            text-align: left;
+            margin: 14px 0;
+            padding-left: 20px;
+            font-size: 0.95em;
+        }
+        .pdf-modal li { margin-bottom: 8px; }
+        .pdf-modal .btn-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 18px;
+        }
+        .btn-secondary {
+            background: #eee;
+            color: var(--text);
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .top-bar, .pdf-instructions, .btn-download { display: none !important; }
+            body { background: #fff; font-size: 11pt; }
+            .container { max-width: 100%; padding: 0; margin: 0; }
+            .handout-header { margin-bottom: 20px; padding-bottom: 12px; }
+            .handout-header h1 { font-size: 20pt; }
+            .section { margin-bottom: 18px; page-break-inside: avoid; }
+            .section h2 { font-size: 13pt; }
+            .concept-grid, .two-col { gap: 8px; }
+            .concept-card { padding: 8px; border: 1px solid #ccc; box-shadow: none; }
+            .definition, .tip-box, .warning-box { padding: 8px 12px; }
+            table { font-size: 9pt; }
+            th { background: #333 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .handout-footer { margin-top: 20px; }
+            a { color: inherit; text-decoration: none; }
+        }
+
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+            .two-col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top bar -->
+    <div class="top-bar">
+        <a href="index.html">&larr; Back to Presentation</a>
+        <button class="btn-download" onclick="downloadPDF()">Download as PDF</button>
+    </div>
+
+    <!-- PDF Instructions Modal -->
+    <div class="pdf-instructions" id="pdfModal">
+        <div class="pdf-modal">
+            <h3>Save as PDF</h3>
+            <p>Your browser's print dialog will open. To save as a PDF:</p>
+            <ol>
+                <li>Set <strong>Destination</strong> to <strong>"Save as PDF"</strong></li>
+                <li>Set <strong>Layout</strong> to <strong>Portrait</strong></li>
+                <li>Enable <strong>"Background graphics"</strong> for best results</li>
+                <li>Click <strong>Save</strong></li>
+            </ol>
+            <div class="btn-row">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-download" onclick="printNow()">Open Print Dialog</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="handout-header">
+            <h1>Gamification in Adult Education</h1>
+            <p>Presentation Handout &mdash; Key Concepts, Strategies &amp; Resources</p>
+        </div>
+
+        <!-- 1. What Is Gamification -->
+        <div class="section">
+            <h2>1. What Is Gamification?</h2>
+            <div class="definition">
+                "The use of game design elements in non-game contexts to enhance user engagement, motivation, and learning."
+                &mdash; Deterding, Dixon, Khaled &amp; Nacke (2011)
+            </div>
+            <p>Gamification is <strong>not</strong> about turning education into a game. It is about strategically applying motivational mechanics&mdash;such as challenges, feedback, and rewards&mdash;to create more engaging and effective learning experiences.</p>
+        </div>
+
+        <!-- 2. Why It Matters -->
+        <div class="section">
+            <h2>2. Why Gamification for Adult Learners?</h2>
+            <p>Adult learners have distinct characteristics (Knowles, 1980) that gamification can address:</p>
+            <ul>
+                <li><strong>Self-directed:</strong> Gamification offers choices and learning paths (autonomy)</li>
+                <li><strong>Experience-rich:</strong> Scenario-based challenges leverage prior knowledge</li>
+                <li><strong>Goal-oriented:</strong> Clear objectives and progress tracking provide relevance</li>
+                <li><strong>Time-constrained:</strong> Micro-learning and bite-sized challenges fit busy schedules</li>
+                <li><strong>Intrinsically motivated:</strong> Meaningful mechanics sustain engagement beyond novelty</li>
+            </ul>
+        </div>
+
+        <!-- 3. Theoretical Foundations -->
+        <div class="section">
+            <h2>3. Theoretical Foundations</h2>
+
+            <h3>Self-Determination Theory (Deci &amp; Ryan, 1985)</h3>
+            <div class="concept-grid">
+                <div class="concept-card">
+                    <h4>Autonomy</h4>
+                    <p>Choice and control over learning paths and pace</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Competence</h4>
+                    <p>Mastery through progressive challenges and feedback</p>
+                </div>
+                <div class="concept-card">
+                    <h4>Relatedness</h4>
+                    <p>Social connection through collaboration and community</p>
+                </div>
+            </div>
+
+            <h3>Flow Theory (Csikszentmihalyi, 1990)</h3>
+            <p>Optimal learning occurs when challenge matches skill level. Gamification helps maintain this balance through adaptive difficulty, scaffolded content, and real-time feedback.</p>
+
+            <h3>Andragogy (Knowles, 1980)</h3>
+            <p>Adults learn best when content is problem-centered, immediately applicable, and respects their experience. Gamification aligns with these principles through relevant scenarios and self-paced progression.</p>
+        </div>
+
+        <!-- 4. Core Game Elements -->
+        <div class="section">
+            <h2>4. Core Game Elements</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Description</th>
+                        <th>Learning Benefit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Points</strong></td>
+                        <td>Numeric rewards for actions</td>
+                        <td>Immediate feedback, progress tracking</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Badges</strong></td>
+                        <td>Visual achievement markers</td>
+                        <td>Milestone recognition, identity building</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Leaderboards</strong></td>
+                        <td>Ranked comparisons</td>
+                        <td>Healthy competition, social motivation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quests/Missions</strong></td>
+                        <td>Goal-oriented task sequences</td>
+                        <td>Structured learning, narrative engagement</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Progress Bars</strong></td>
+                        <td>Visual completion indicators</td>
+                        <td>Motivation to complete, clear expectations</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Levels</strong></td>
+                        <td>Tiered difficulty stages</td>
+                        <td>Scaffolded challenge, sense of growth</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Narratives</strong></td>
+                        <td>Story-based context</td>
+                        <td>Meaning, emotional connection, relevance</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Social Features</strong></td>
+                        <td>Teams, peer feedback, guilds</td>
+                        <td>Collaboration, relatedness, accountability</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 5. Design Principles -->
+        <div class="section">
+            <h2>5. Design Principles for Adult Learners</h2>
+
+            <div class="tip-box">
+                <strong>Golden Rule:</strong> Game elements should serve the learning goals&mdash;not the other way around. Start with objectives, then choose mechanics.
+            </div>
+
+            <h3>Bartle's Player Types</h3>
+            <div class="two-col">
+                <div>
+                    <ul>
+                        <li><strong>Achievers</strong> &mdash; want mastery and completion</li>
+                        <li><strong>Explorers</strong> &mdash; want discovery and freedom</li>
+                    </ul>
+                </div>
+                <div>
+                    <ul>
+                        <li><strong>Socializers</strong> &mdash; want interaction and teamwork</li>
+                        <li><strong>Competitors</strong> &mdash; want rankings and challenges</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Key Guidelines</h3>
+            <ul class="checklist">
+                <li>Make participation voluntary&mdash;forced gamification backfires</li>
+                <li>Balance challenge and skill to maintain flow</li>
+                <li>Offer meaningful choices to support autonomy</li>
+                <li>Provide clear, immediate feedback</li>
+                <li>Allow safe failure&mdash;mistakes become learning opportunities</li>
+                <li>Iterate based on learner feedback and data</li>
+            </ul>
+        </div>
+
+        <!-- 6. Common Pitfalls -->
+        <div class="section">
+            <h2>6. Common Pitfalls to Avoid</h2>
+            <div class="warning-box">
+                <ul>
+                    <li><strong>Overjustification Effect:</strong> External rewards can undermine intrinsic motivation</li>
+                    <li><strong>One-Size-Fits-All:</strong> Different learners respond to different mechanics</li>
+                    <li><strong>Shallow Gamification:</strong> Adding badges to boring content does not make it engaging</li>
+                    <li><strong>Competition Anxiety:</strong> Public leaderboards can demotivate struggling learners</li>
+                    <li><strong>Novelty Wear-Off:</strong> Engagement may decline without fresh challenges</li>
+                    <li><strong>Ethical Concerns:</strong> Consider manipulation, data privacy, inclusivity, and cultural sensitivity</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 7. Tools & Technologies -->
+        <div class="section">
+            <h2>7. Tools &amp; Technologies</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Best For</th>
+                        <th>Key Feature</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Kahoot!</td>
+                        <td>Live quizzes &amp; polls</td>
+                        <td>Real-time audience engagement</td>
+                    </tr>
+                    <tr>
+                        <td>Classcraft</td>
+                        <td>Classroom RPG</td>
+                        <td>Behavior management &amp; collaboration</td>
+                    </tr>
+                    <tr>
+                        <td>Badgr / Open Badges</td>
+                        <td>Micro-credentialing</td>
+                        <td>Portable, verifiable digital badges</td>
+                    </tr>
+                    <tr>
+                        <td>Moodle (with plugins)</td>
+                        <td>LMS gamification</td>
+                        <td>Points, levels, leaderboards</td>
+                    </tr>
+                    <tr>
+                        <td>Genially</td>
+                        <td>Interactive content</td>
+                        <td>Gamified presentations &amp; infographics</td>
+                    </tr>
+                    <tr>
+                        <td>Quizizz</td>
+                        <td>Self-paced quizzes</td>
+                        <td>Fun feedback &amp; student-paced mode</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 8. Key Takeaways -->
+        <div class="section">
+            <h2>8. Key Takeaways</h2>
+            <ol>
+                <li>Gamification is about <strong>motivation design</strong>, not just games</li>
+                <li>It works best when grounded in <strong>learning theory</strong> (SDT, Flow, Andragogy)</li>
+                <li>Adult learners need <strong>autonomy, relevance, and respect</strong></li>
+                <li>Start with <strong>learning objectives</strong>, then choose mechanics</li>
+                <li>Avoid shallow "pointsification"&mdash;aim for <strong>meaningful engagement</strong></li>
+                <li><strong>Iterate</strong> based on learner feedback and data</li>
+            </ol>
+        </div>
+
+        <!-- 9. References -->
+        <div class="section">
+            <h2>9. References</h2>
+            <ul class="references">
+                <li>Bartle, R. (1996). Hearts, Clubs, Diamonds, Spades: Players Who Suit MUDs. <em>Journal of MUD Research, 1</em>(1).</li>
+                <li>Csikszentmihalyi, M. (1990). <em>Flow: The Psychology of Optimal Experience.</em> Harper &amp; Row.</li>
+                <li>Deci, E. L., &amp; Ryan, R. M. (1985). <em>Intrinsic Motivation and Self-Determination in Human Behavior.</em> Plenum Press.</li>
+                <li>Deterding, S., Dixon, D., Khaled, R., &amp; Nacke, L. (2011). From game design elements to gamefulness: Defining "gamification." <em>Proceedings of MindTrek 2011.</em></li>
+                <li>Hamari, J., Koivisto, J., &amp; Sarsa, H. (2014). Does gamification work? A literature review of empirical studies on gamification. <em>Proceedings of HICSS 2014.</em></li>
+                <li>Knowles, M. S. (1980). <em>The Modern Practice of Adult Education: From Pedagogy to Andragogy.</em> Cambridge.</li>
+                <li>Landers, R. N. (2014). Developing a theory of gamified learning. <em>Simulation &amp; Gaming, 45</em>(6), 752&ndash;768.</li>
+                <li>Sailer, M., &amp; Homner, L. (2020). The gamification of learning: A meta-analysis. <em>Educational Psychology Review, 32</em>, 77&ndash;112.</li>
+                <li>Subhash, S., &amp; Cudney, E. A. (2018). Gamified learning in higher education: A systematic review. <em>Computers in Human Behavior, 87</em>, 192&ndash;206.</li>
+            </ul>
+        </div>
+
+        <div class="handout-footer">
+            <p>Gamification in Adult Education &mdash; Presentation Handout</p>
+        </div>
+
+    </div>
+
+    <script>
+        function downloadPDF() {
+            document.getElementById('pdfModal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('pdfModal').classList.remove('show');
+        }
+
+        function printNow() {
+            closeModal();
+            setTimeout(function() { window.print(); }, 200);
+        }
+
+        // Close modal on outside click
+        document.getElementById('pdfModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Close modal on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+
+</body>
+</html>
